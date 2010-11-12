@@ -31,6 +31,20 @@ implements IFeatureExtraction
 	protected double[] adFeatures = null;
 
 	/**
+         * @author Mauricio van der Maesen
+	 * An array of mean values of the extracted coeficients (for LPC).
+	 */
+        protected double[] coefMean = null;
+
+
+	/**
+         * @author Mauricio van der Maesen
+	 * An array of standard desviation values of the extracted coeficients (for LPC).
+	 */
+        protected double[] coefStdDesv = null;
+
+
+	/**
 	 * For serialization versioning.
 	 * When adding new members or make other structural
 	 * changes regenerate this number with the
