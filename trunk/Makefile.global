@@ -1,0 +1,3 @@
+COMMONJFLAGS=-source 1.4
+MARF_TOOLS=$(BASE_MARF_DIR)/tools
+MAKE=`$(MARF_TOOLS)/make-test.sh`

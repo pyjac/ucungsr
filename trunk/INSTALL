@@ -1,0 +1,128 @@
+$Header: /cvsroot/marf/marf/INSTALL,v 1.5 2005/07/19 03:30:18 mokhov Exp $
+
+Contents:
+=========
+
+. Installation
+   . Via download
+   . From sources
+     . UNIX/Linux
+     . Windows
+     . Cygwin
+
+. Upgrade
+
+MARF INSTALLATION
+=================
+
+NOTE: You will need at least JDK 1.4 installed as JDKs lower than that
+are no longer supported (a patch can be made however if there is really
+a need for it).
+
+There are several ways to "install" MARF.
+
+   - Download the latest marf-<ver>.jar
+   - Build it from sources
+     - UNIXen
+     - Windows
+
+Downloading the Latest marf-<ver>.jar
+-------------------------------------
+
+	Just go to <http://marf.sf.net>, and download marf-<ver>.jar
+	from there.
+
+	To install it, put the downloaded .jar file somewhere from within
+	the reach of your CLASSPATH or Java extensions directory, EXTDIRS.
+
+	Et voila, since now on you can try to write some mini mind-blowing
+	apps based on MARF. You can also get some demo applications,
+	such as SpeakerIdentApp from the same exact web site
+	to try out.
+
+    This "install" is "platform-independent".
+
+
+Building From Sources
+---------------------
+
+	You can grab the latest traball of the current CVS,
+	or pre-packaged release from <http://marf.sf.net>
+	and compile it yourself producing the .jar file, which
+	you will need to install as described in the "Downloading
+	the Lastest marf-<ver>.jar" section above.
+
+UNIXen
+
+	We went with the makefile build approach. You will need
+	GNU make (sometimes called 'gmake') to use it. Assuming
+	you have untarred and ungzipped the sources, 'cd' to
+	/src and type:
+
+	$ make
+
+		Will compile and build marf-<ver>.jar in the current direcotry.
+
+	$ make apidoc
+
+		Will compile general API javadoc pages in "../../api"
+
+	$ make apidoc-dev
+
+		Will compile developer's API javadoc pages in "../../api-dev"
+
+	Of course, you can compile w/o the makefile and use javac
+	and jar directly if you really want to.
+
+Windows
+
+	We also used JBuilder 5, 7, and 8, so there is a project file
+	marf.jpx in this directory. If you have JBuilder you can use
+	this project file to build marf.jar; otherwise, you are stuck
+	with javac/java/jar command-line tools for the moment.
+
+    Additionally, we have project files for Eclipse (.project and
+    .classpath) that you can import and NetBeans (build.xml and
+    nbproject).
+
+Cygwin / under Windows
+
+    Follow pretty much the same steps as for UNIXen build above. You
+    might need to hack Makefiles to support ";" directory separator
+    and quoting instead of ":".
+
+MARF UPGRADE
+============
+
+Normally, an upgrade would simply mean just yanking old .jar out,
+and plugging the new one in, UNLESS you depend on certain parts
+of MARF's experimental/legacy API.
+
+It is important to know that MARF's API is still stabilizing,
+especially for the newer modules. Even older modules still
+get affected as the MARF is still flexible in that. Thus,
+API changes do in fact happen every release insofar, for the
+better. This, however, also means that the serialized version
+of the Serializable classes also change, so the corresponding
+data needs to be retrained until an upgrade utility is available.
+
+Thus, please check the versions, ChangeLog, class revisions,
+and talk to us if you are unsure of what can affect you. A great
+deal of effort went into verssionning each public class and
+interface of MARF, which you can check by running
+
+    java -jar marf.jar --verbose
+
+To ask about more detailed changes if they are unclear from
+the ChangeLog, please write to us to marf-devel@lists.sf.net
+or post a question in one of our forums at:
+
+    https://sourceforge.net/forum/?group_id=63118
+
+Each release of MARF also supplies the Javadoc API comments,
+so you can and should consult those too. The bleeding edge
+API is located at:
+
+    http://marf.sourceforge.net/api/
+
+EOF
