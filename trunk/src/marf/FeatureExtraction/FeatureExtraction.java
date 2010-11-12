@@ -73,6 +73,26 @@ implements IFeatureExtraction
 		return this.adFeatures;
 	}
 
+        /**
+	 * Allows retrieval of the mean values of LPC coeficients.
+	 * @return array of mean values (<code>double</code> values)
+	 */
+        public final double[] getFeaturesMeanArray()
+	{
+		return this.coefMean;
+	}
+
+
+        /**
+	 * Allows retrieval of the standard desviation values of LPC coeficients.
+	 * @return array of mean values (<code>double</code> values)
+	 */
+        public final double[] getFeaturesStdDesvArray()
+	{
+		return this.coefStdDesv;
+	}
+
+
 	/**
 	 * Retrieves inner preprocessing reference.
 	 * @return the preprocessing reference
