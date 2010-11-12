@@ -57,7 +57,7 @@ public class SR1 {
             MARF.setPreprocessingMethod(MARF.DUMMY); // Normalizaci√≥n
             MARF.setFeatureExtractionMethod(MARF.LPC); // TODO: Agregar dato de media y varianza para evaluar resultado
             MARF.setClassificationMethod(MARF.MAHALANOBIS_DISTANCE);
-            MARF.setDumpSpectrogram(true);
+            MARF.setDumpSpectrogram(false);
             MARF.setSampleFormat(MARF.WAV);
 
         } catch (MARFException e) {
