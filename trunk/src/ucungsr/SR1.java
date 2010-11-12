@@ -6,6 +6,9 @@ package ucungsr;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import marf.FeatureExtraction.LPC.LPC;
 import marf.MARF;
 import marf.util.MARFException;
 
@@ -51,7 +54,7 @@ public class SR1 {
 
     private static void marfConfig() {
         try {
-            MARF.setPreprocessingMethod(MARF.DUMMY); // Normalización
+            MARF.setPreprocessingMethod(MARF.DUMMY); // Normalizaci√≥n
             MARF.setFeatureExtractionMethod(MARF.LPC); // TODO: Agregar dato de media y varianza para evaluar resultado
             MARF.setClassificationMethod(MARF.MAHALANOBIS_DISTANCE);
             MARF.setDumpSpectrogram(true);
@@ -68,25 +71,20 @@ public class SR1 {
     }
 
     private static void train(int id) {
-
         System.out.println("* TRAIN *");
-
-        MARF.setCurrentSubject(id);
         try {
+            MARF.setCurrentSubject(id);
             MARF.train();
-
+//            caracteristicas();
             try {
-                double[] statistics = new double[2];
-                statistics[0] = Math.random();
-                statistics[1] = Math.random();
 
                 DB db = new DB();
-                int lastId = db.saveStatistics(statistics, -1);
+
+                db.setMeanValues(getMean());
+                db.setStdDesvValues(getStdDesv());
+
+                int lastId = db.saveStatistics(id);
                 System.out.println("LAST MYSQL ID:\t" + lastId);
-
-
-                statistics = db.getStatistics(lastId);
-                System.out.println("Media:\t" + Double.toString(statistics[0]) + "\nVarianza:\t" + Double.toString(statistics[1]));
 
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
@@ -103,17 +101,38 @@ public class SR1 {
         try {
             MARF.recognize();
             id = MARF.queryResultID();
-
-            DB db = new DB();
-            double[] statistics = db.getStatistics(id);
-            System.out.println("Media:\t" + Double.toString(statistics[0]) + "\nVarianza:\t" + Double.toString(statistics[1]));
-
             System.out.println("ID:\t" + id);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+
+            double prob = probabilidad(id);
+            System.out.println("Probabilidad:\t " + Double.toString(prob));
         } catch (MARFException ex) {
         }
         return id;
+    }
+
+    private static double probabilidad(int id) {
+        double prob = 0;
+        try {
+            DB db = new DB();
+            db.loadStatistics(id);
+            double[] mean = db.getMeanValues(id);
+            double[] stdesv = db.getStdDesvValues(id);
+            double[] featuesVector = caracteristicas();
+            double detSigma = 1;
+            double d2 = 0;
+            for (int i = 1; i < LPC.DEFAULT_POLES; i++) {
+                d2 += Math.pow(featuesVector[i] - mean[i], 2) / stdesv[i];
+                detSigma *= stdesv[i];
+            }
+
+            
+            double b = Math.pow(2 * Math.PI, Math.sqrt(LPC.DEFAULT_POLES-1)) * detSigma;
+            prob = Math.sqrt(Math.exp(-d2) / b);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SR1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return prob;
     }
 
     private static double[] distancias() {
@@ -122,7 +141,7 @@ public class SR1 {
             int id = MARF.getResultSet().getResultSetSorted()[i].getID();
             double outcome = MARF.getResultSet().getResultSetSorted()[i].getOutcome();
             distancias[id - 1] = outcome;
-            System.out.println(id + "\t" + distancias[id - 1]);
+            System.out.println(id + "\t" + distancias[id - 1] + " prob:\t" + Double.toString(probabilidad(id)));
         }
         return distancias;
     }
@@ -135,5 +154,15 @@ public class SR1 {
 //        }
 //        System.out.println(vector);
         return FeaturesArray;
+    }
+
+    public static double[] getMean() {
+        double[] FeaturesMeanArray = MARF.getFeatureExtraction().getFeaturesMeanArray();
+        return FeaturesMeanArray;
+    }
+
+    public static double[] getStdDesv() {
+        double[] FeaturesStdDesvArray = MARF.getFeatureExtraction().getFeaturesStdDesvArray();
+        return FeaturesStdDesvArray;
     }
 }

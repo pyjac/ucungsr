@@ -152,6 +152,7 @@ public class LPC
                     this.coefMean[j] = (i * mean0[j] + Math.abs(adLPCCoeffs[j])) / (i + 1); // u_(N+1) = (N*u_N + x_(N+1))/N+1
                     this.coefStdDesv[j] = (i * this.coefStdDesv[j] + i * Math.pow((mean0[j] - this.coefMean[j]), 2) + Math.pow((Math.abs(adLPCCoeffs[j]) - this.coefMean[j]), 2)) / (i + 1);
 
+//                    System.out
                     adFeatures[j] += adLPCCoeffs[j];
                     //Debug.debug("lpc_coeffs[" + j + "]"  + lpc_coeffs[j]);
                 }

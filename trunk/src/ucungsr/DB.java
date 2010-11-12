@@ -7,6 +7,7 @@ package ucungsr;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import marf.FeatureExtraction.LPC.LPC;
 
 /**
  *
@@ -14,6 +15,8 @@ import java.util.logging.Logger;
  */
 public class DB {
 
+    private double[] coefMean = null;
+    private double[] coefStdDesv = null;
     private Connection conexion;
 
     public DB() {
@@ -25,38 +28,71 @@ public class DB {
         }
     }
 
-    public int saveStatistics(double[] statistics, int id) throws SQLException {
-        Statement s = conexion.createStatement();
-        if (id > -1) {
-            String query = "UPDATE speakers SET mean = " + Double.toString(statistics[0]) + ", variance = " + Double.toString(statistics[1]) + ")";
-            s.execute(query);
-        } else {
-            String query = "INSERT INTO speakers (mean,variance) VALUES (" + Double.toString(statistics[0]) + "," + Double.toString(statistics[1]) + ")";
-            s.execute(query);
-            query = "SELECT LAST_INSERT_ID()";
-            ResultSet rs = s.executeQuery(query);
-            rs.next();
-            id = rs.getInt(1);
-        }
-        return id;
-    }
-
-    public double[] getStatistics(int id) throws SQLException {
-        Statement s = conexion.createStatement();
-        ResultSet rs = s.executeQuery("SELECT mean,variance FROM speakers WHERE id = " + id);
-        double[] statistics = new double[2];
-        while (rs.next()) {
-            statistics[0] = rs.getDouble(1);
-            statistics[1] = rs.getDouble(2);
-        }
-        return statistics;
-    }
-
     private void conectar() throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (Exception e) {
         }
         conexion = DriverManager.getConnection("jdbc:mysql://localhost/ng1", "root", "");
+    }
+
+    public int saveStatistics(int id) throws SQLException {
+        Statement s = conexion.createStatement();
+        if (id > -1) {
+            for (int i = 0; i < LPC.DEFAULT_POLES; i++) {
+                String query = "UPDATE spk_coef "
+                        + "SET mean = " + Double.toString(coefMean[i]) + ", "
+                        + "stdesv = " + Double.toString(coefStdDesv[i]) + " "
+                        + "WHERE spk_id = " + id + " "
+                        + "AND coef = " + i;
+                s.execute(query);
+            }
+        } else {
+            String query = "INSERT INTO speakers (nombre) VALUES (\"\")";
+            s.execute(query);
+            query = "SELECT LAST_INSERT_ID()";
+            ResultSet rs = s.executeQuery(query);
+            rs.next();
+            id = rs.getInt(1);
+
+            for (int i = 0; i < LPC.DEFAULT_POLES; i++) {
+                query = "INSERT INTO spk_coef (spk_id, coef, mean, stdesv) "
+                        + "VALUES (" + id + ", " + i + ", "
+                        + Double.toString(coefMean[i]) + ", "
+                        + Double.toString(coefStdDesv[i]) + ")";
+                s.execute(query);
+            }
+        }
+        return id;
+    }
+
+    public void loadStatistics(int id) throws SQLException {
+        Statement s = conexion.createStatement();
+        ResultSet rs = s.executeQuery("SELECT coef,mean,stdesv FROM spk_coef WHERE spk_id = " + id);
+
+        coefMean = new double[LPC.DEFAULT_POLES];
+        coefStdDesv = new double[LPC.DEFAULT_POLES];
+
+        while (rs.next()) {
+            int indice = rs.getInt(1);
+            coefMean[indice] = rs.getDouble(2);
+            coefStdDesv[indice] = rs.getDouble(3);
+        }
+    }
+
+    public double[] getMeanValues(int id) {
+        return coefMean;
+    }
+
+    public double[] getStdDesvValues(int id) {
+        return coefStdDesv;
+    }
+
+    public void setMeanValues(double[] _coefMean) {
+        coefMean = _coefMean;
+    }
+
+    public void setStdDesvValues(double[] _coefStdDesv) {
+        coefStdDesv = _coefStdDesv;
     }
 }
