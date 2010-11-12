@@ -41,7 +41,7 @@ implements IFeatureExtraction
          * @author Mauricio van der Maesen
 	 * An array of standard desviation values of the extracted coeficients (for LPC).
 	 */
-        protected double[] coefStdDesv = null;
+        protected double[] coefVariance = null;
 
 
 	/**
@@ -87,9 +87,9 @@ implements IFeatureExtraction
 	 * Allows retrieval of the standard desviation values of LPC coeficients.
 	 * @return array of mean values (<code>double</code> values)
 	 */
-        public final double[] getFeaturesStdDesvArray()
+        public final double[] getFeaturesVaianceArray()
 	{
-		return this.coefStdDesv;
+		return this.coefVariance;
 	}
 
 

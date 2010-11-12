@@ -16,7 +16,7 @@ import marf.FeatureExtraction.LPC.LPC;
 public class DB {
 
     private double[] coefMean = null;
-    private double[] coefStdDesv = null;
+    private double[] coefVariance = null;
     private Connection conexion;
 
     public DB() {
@@ -42,7 +42,7 @@ public class DB {
             for (int i = 0; i < LPC.DEFAULT_POLES; i++) {
                 String query = "UPDATE spk_coef "
                         + "SET mean = " + Double.toString(coefMean[i]) + ", "
-                        + "stdesv = " + Double.toString(coefStdDesv[i]) + " "
+                        + "stdesv = " + Double.toString(coefVariance[i]) + " "
                         + "WHERE spk_id = " + id + " "
                         + "AND coef = " + i;
                 s.execute(query);
@@ -59,7 +59,7 @@ public class DB {
                 query = "INSERT INTO spk_coef (spk_id, coef, mean, stdesv) "
                         + "VALUES (" + id + ", " + i + ", "
                         + Double.toString(coefMean[i]) + ", "
-                        + Double.toString(coefStdDesv[i]) + ")";
+                        + Double.toString(coefVariance[i]) + ")";
                 s.execute(query);
             }
         }
@@ -71,12 +71,12 @@ public class DB {
         ResultSet rs = s.executeQuery("SELECT coef,mean,stdesv FROM spk_coef WHERE spk_id = " + id);
 
         coefMean = new double[LPC.DEFAULT_POLES];
-        coefStdDesv = new double[LPC.DEFAULT_POLES];
+        coefVariance = new double[LPC.DEFAULT_POLES];
 
         while (rs.next()) {
             int indice = rs.getInt(1);
             coefMean[indice] = rs.getDouble(2);
-            coefStdDesv[indice] = rs.getDouble(3);
+            coefVariance[indice] = rs.getDouble(3);
         }
     }
 
@@ -85,7 +85,7 @@ public class DB {
     }
 
     public double[] getStdDesvValues(int id) {
-        return coefStdDesv;
+        return coefVariance;
     }
 
     public void setMeanValues(double[] _coefMean) {
@@ -93,6 +93,6 @@ public class DB {
     }
 
     public void setStdDesvValues(double[] _coefStdDesv) {
-        coefStdDesv = _coefStdDesv;
+        coefVariance = _coefStdDesv;
     }
 }

@@ -43,7 +43,7 @@ public interface IFeatureExtraction
 	 * Allows retrieval of the standard desviation values of LPC coeficients.
 	 * @return array of mean values (<code>double</code> values)
 	 */
-        double[] getFeaturesStdDesvArray();
+        double[] getFeaturesVaianceArray();
 
 	/**
 	 * Retrieves inner preprocessing reference.

@@ -81,7 +81,7 @@ public class SR1 {
                 DB db = new DB();
 
                 db.setMeanValues(getMean());
-                db.setStdDesvValues(getStdDesv());
+                db.setStdDesvValues(getVariance());
 
                 int lastId = db.saveStatistics(id);
                 System.out.println("LAST MYSQL ID:\t" + lastId);
@@ -126,7 +126,7 @@ public class SR1 {
             }
 
             
-            double b = Math.pow(2 * Math.PI, Math.sqrt(LPC.DEFAULT_POLES-1)) * detSigma;
+            double b = Math.pow(2 * Math.PI, LPC.DEFAULT_POLES-1) * detSigma;
             prob = Math.sqrt(Math.exp(-d2) / b);
 
         } catch (SQLException ex) {
@@ -137,11 +137,15 @@ public class SR1 {
 
     private static double[] distancias() {
         double distancias[] = new double[MARF.getResultSet().getResultSetSorted().length];
+
+            System.out.println("ID\tDistancia\tProb");
+
         for (int i = 0; i < MARF.getResultSet().getResultSetSorted().length; i++) {
             int id = MARF.getResultSet().getResultSetSorted()[i].getID();
             double outcome = MARF.getResultSet().getResultSetSorted()[i].getOutcome();
             distancias[id - 1] = outcome;
-            System.out.println(id + "\t" + distancias[id - 1] + " prob:\t" + Double.toString(probabilidad(id)));
+                        
+            System.out.println(id + "\t" + Double.toString(distancias[id - 1]).replaceAll("\\.", ",") + "\t" + Double.toString(probabilidad(id)).replaceAll("\\.", ","));
         }
         return distancias;
     }
@@ -161,8 +165,8 @@ public class SR1 {
         return FeaturesMeanArray;
     }
 
-    public static double[] getStdDesv() {
-        double[] FeaturesStdDesvArray = MARF.getFeatureExtraction().getFeaturesStdDesvArray();
-        return FeaturesStdDesvArray;
+    public static double[] getVariance() {
+        double[] FeaturesVarianceArray = MARF.getFeatureExtraction().getFeaturesVaianceArray();
+        return FeaturesVarianceArray;
     }
 }
