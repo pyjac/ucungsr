@@ -34,7 +34,7 @@ public class LPC
      * Default number of poles, 20.
      * @since 0.3.0
      */
-    public static final int DEFAULT_POLES = 20;
+    public static final int DEFAULT_POLES = 10;
     /**
      * Number of poles.
      * <p>A pole is a root of the denominator in the Laplace transform of the
@@ -79,7 +79,7 @@ public class LPC
      * Sets the default values of poles and window length if none
      * were supplied by an application.
      */
-    private final void setDefaults() {
+    private void setDefaults() {
         this.iPoles = DEFAULT_POLES;
         this.iWindowLen = DEFAULT_WINDOW_LENGTH;
     }
@@ -147,13 +147,13 @@ public class LPC
                 double[] mean0 = new double[this.iPoles];
                 int i = (int)Math.floor((iCount-iHalfWindow)/iHalfWindow);
 
-//                System.out.println(i);
+//                System.out.println("");
 
                 for (int j = 0; j < this.iPoles; j++) {
 
                     mean0[j] = this.coefMean[j];
-                    this.coefMean[j] = (i * mean0[j] + Math.abs(adLPCCoeffs[j])) / (i + 1); // u_(N+1) = (N*u_N + x_(N+1))/N+1
-                    this.coefVariance[j] = (i * this.coefVariance[j] + i * Math.pow((mean0[j] - this.coefMean[j]), 2) + Math.pow((Math.abs(adLPCCoeffs[j]) - this.coefMean[j]), 2)) / (i + 1);
+                    this.coefMean[j] = (i * mean0[j] + adLPCCoeffs[j]) / (i + 1); // u_(N+1) = (N*u_N + x_(N+1))/N+1
+                    this.coefVariance[j] = (i * this.coefVariance[j] + i * Math.pow((mean0[j] - this.coefMean[j]), 2) + Math.pow((adLPCCoeffs[j] - this.coefMean[j]), 2)) / (i + 1);
 
 //                    System.out.print(Double.toString(adLPCCoeffs[j]).replaceAll("\\.", ",") + "\t");
 
@@ -171,7 +171,7 @@ public class LPC
             // Smoothing
             if (iWindowsNum > 1) {
                 for (int j = 0; j < this.iPoles; j++) {
-                    this.coefVariance[j] = Math.sqrt(this.coefVariance[j]);
+//                    this.coefVariance[j] = Math.sqrt(this.coefVariance[j]);
                     adFeatures[j] /= iWindowsNum;
                 }
             }

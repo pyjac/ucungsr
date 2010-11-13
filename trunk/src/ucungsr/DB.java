@@ -40,15 +40,28 @@ public class DB {
         Statement s = conexion.createStatement();
         if (id > -1) {
             for (int i = 0; i < LPC.DEFAULT_POLES; i++) {
-                String query = "UPDATE spk_coef "
-                        + "SET mean = " + Double.toString(coefMean[i]) + ", "
-                        + "stdesv = " + Double.toString(coefVariance[i]) + " "
-                        + "WHERE spk_id = " + id + " "
-                        + "AND coef = " + i;
+                String query = "INSERT INTO speakers (id, nombre) "
+                        + "VALUES (" + id + ", '') "
+                        + "ON DUPLICATE KEY "
+                        + "UPDATE nombre = ''";
+                s.execute(query);
+
+                query = "INSERT INTO spk_coef (mean, stdesv, spk_id, coef) VALUES ("
+                        + Double.toString(coefMean[i]) + ", "
+                        + Double.toString(coefVariance[i]) + ", "
+                        + id + ", "
+                        + i +") "
+                        + "ON DUPLICATE KEY "
+                        + "UPDATE mean = " + Double.toString(coefMean[i]) + ", "
+                        + "stdesv = " + Double.toString(coefVariance[i]);
+
                 s.execute(query);
             }
         } else {
             String query = "INSERT INTO speakers (nombre) VALUES (\"\")";
+
+            System.out.println(query);
+
             s.execute(query);
             query = "SELECT LAST_INSERT_ID()";
             ResultSet rs = s.executeQuery(query);
