@@ -34,12 +34,6 @@ public interface IFeatureExtraction
 	double[] getFeaturesArray();
 
         /**
-	 * Allows retrieval of the mean values of LPC coeficients.
-	 * @return array of mean values (<code>double</code> values)
-	 */
-        double[] getFeaturesMeanArray();
-
-        /**
 	 * Allows retrieval of the standard desviation values of LPC coeficients.
 	 * @return array of mean values (<code>double</code> values)
 	 */

@@ -32,13 +32,6 @@ implements IFeatureExtraction
 
 	/**
          * @author Mauricio van der Maesen
-	 * An array of mean values of the extracted coeficients (for LPC).
-	 */
-        protected double[] coefMean = null;
-
-
-	/**
-         * @author Mauricio van der Maesen
 	 * An array of standard desviation values of the extracted coeficients (for LPC).
 	 */
         protected double[] coefVariance = null;
@@ -71,15 +64,6 @@ implements IFeatureExtraction
 	public final double[] getFeaturesArray()
 	{
 		return this.adFeatures;
-	}
-
-        /**
-	 * Allows retrieval of the mean values of LPC coeficients.
-	 * @return array of mean values (<code>double</code> values)
-	 */
-        public final double[] getFeaturesMeanArray()
-	{
-		return this.coefMean;
 	}
 
 

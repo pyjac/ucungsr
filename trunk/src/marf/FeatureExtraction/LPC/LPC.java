@@ -119,11 +119,11 @@ public class LPC
             int iHalfWindow = this.iWindowLen / 2;
 
 
-            this.coefMean = new double[this.iPoles];
+//            this.coefMean = new double[this.iPoles];
             this.coefVariance = new double[this.iPoles];
 
             for (int i = 0; i < this.iPoles; i++) {
-                this.coefMean[i] = 0;
+                this.adFeatures[i] = 0;
                 this.coefVariance[i] = 0;
             }
 
@@ -145,19 +145,18 @@ public class LPC
 
                 // Collect features
                 double[] mean0 = new double[this.iPoles];
-                int i = (int)Math.floor((iCount-iHalfWindow)/iHalfWindow);
+                int i = (int) Math.floor((iCount - iHalfWindow) / iHalfWindow);
 
 //                System.out.println("");
 
                 for (int j = 0; j < this.iPoles; j++) {
-
-                    mean0[j] = this.coefMean[j];
-                    this.coefMean[j] = (i * mean0[j] + adLPCCoeffs[j]) / (i + 1); // u_(N+1) = (N*u_N + x_(N+1))/N+1
-                    this.coefVariance[j] = (i * this.coefVariance[j] + i * Math.pow((mean0[j] - this.coefMean[j]), 2) + Math.pow((adLPCCoeffs[j] - this.coefMean[j]), 2)) / (i + 1);
+                    mean0[j] = this.adFeatures[j];
+                    this.adFeatures[j] = (i * mean0[j] + adLPCCoeffs[j]) / (i + 1); // u_(N+1) = (N*u_N + x_(N+1))/N+1
+                    this.coefVariance[j] = (i * this.coefVariance[j] + i * Math.pow((mean0[j] - this.adFeatures[j]), 2) + Math.pow((adLPCCoeffs[j] - this.adFeatures[j]), 2)) / (i + 1);
 
 //                    System.out.print(Double.toString(adLPCCoeffs[j]).replaceAll("\\.", ",") + "\t");
 
-                    adFeatures[j] += adLPCCoeffs[j];
+//                    adFeatures[j] += adLPCCoeffs[j];
                     //Debug.debug("lpc_coeffs[" + j + "]"  + lpc_coeffs[j]);
                 }
 
@@ -169,12 +168,12 @@ public class LPC
 //                System.out.println("");
 
             // Smoothing
-            if (iWindowsNum > 1) {
-                for (int j = 0; j < this.iPoles; j++) {
-//                    this.coefVariance[j] = Math.sqrt(this.coefVariance[j]);
-                    adFeatures[j] /= iWindowsNum;
-                }
-            }
+//            if (iWindowsNum > 1) {
+//                for (int j = 0; j < this.iPoles; j++) {
+//                    adFeatures[j] /= iWindowsNum;
+//                }
+//            }
+
 
             Debug.debug("LPC.extractFeatures() - number of windows = " + iWindowsNum);
 

@@ -15,5 +15,5 @@ public class Main {
      */
     public static void main(String[] args) {
         SR1 sR1 = new SR1(args);
-    }
+    }    
 }

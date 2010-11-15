@@ -73,13 +73,12 @@ public class SR1 {
             MARF.setCurrentSubject(id);
             MARF.train();
 //            caracteristicas(true);
-//            getMean(true);
 //            getVariance(true);
             try {
 
                 DB db = new DB();
 
-                db.setMeanValues(getMean(false));
+                db.setMeanValues(caracteristicas(false));
                 db.setStdDesvValues(getVariance(false));
 
                 int lastId = db.saveStatistics(id);
@@ -159,19 +158,6 @@ public class SR1 {
             System.out.println(vector);
         }
         return FeaturesArray;
-    }
-
-    public static double[] getMean(boolean print) {
-        double[] FeaturesMeanArray = MARF.getFeatureExtraction().getFeaturesMeanArray();
-        if (print) {
-            String vector = new String();
-            for (int i = 0; i < FeaturesMeanArray.length; i++) {
-                vector += Double.toString(FeaturesMeanArray[i]).replaceAll("\\.", ",") + "\t";
-            }
-            System.out.println("* Mean Vector *");
-            System.out.println(vector);
-        }
-        return FeaturesMeanArray;
     }
 
     public static double[] getVariance(boolean print) {

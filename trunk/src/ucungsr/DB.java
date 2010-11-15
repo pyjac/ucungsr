@@ -14,7 +14,6 @@ import marf.FeatureExtraction.LPC.LPC;
  * @author mauricio
  */
 public class DB {
-
     private double[] coefMean = null;
     private double[] coefVariance = null;
     private Connection conexion;

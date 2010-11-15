@@ -71,7 +71,7 @@ extends Preprocessing
 	public boolean preprocess()
 	throws PreprocessingException
 	{
-		return normalize();
+		return (normalize() && removeSilence());
 	}
 
 	/**
@@ -91,12 +91,12 @@ extends Preprocessing
 	 * @return <code>false</code>
 	 * @throws PreprocessingException never thrown
 	 */
-	public final boolean removeSilence()
-	throws PreprocessingException
-	{
-		Debug.debug(this.getClass().getName() + ".removeSilence()");
-		return false;
-	}
+//	public final boolean removeSilence()
+//	throws PreprocessingException
+//	{
+//		Debug.debug(this.getClass().getName() + ".removeSilence()");
+//		return false;
+//	}
 
 	/**
 	 * Dummy implementation of <code>cropAudio()</code> for testing.
