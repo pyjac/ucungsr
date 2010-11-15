@@ -7,7 +7,7 @@ package ucungsr;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import marf.FeatureExtraction.LPC.LPC;
+import marf.FeatureExtraction.ucung.ucungFeatureExtraction;
 
 /**
  *
@@ -38,7 +38,7 @@ public class DB {
     public int saveStatistics(int id) throws SQLException {
         Statement s = conexion.createStatement();
         if (id > -1) {
-            for (int i = 0; i < LPC.DEFAULT_POLES; i++) {
+            for (int i = 0; i < ucungFeatureExtraction.DEFAULT_POLES; i++) {
                 String query = "INSERT INTO speakers (id, nombre) "
                         + "VALUES (" + id + ", '') "
                         + "ON DUPLICATE KEY "
@@ -67,7 +67,7 @@ public class DB {
             rs.next();
             id = rs.getInt(1);
 
-            for (int i = 0; i < LPC.DEFAULT_POLES; i++) {
+            for (int i = 0; i < ucungFeatureExtraction.DEFAULT_POLES; i++) {
                 query = "INSERT INTO spk_coef (spk_id, coef, mean, stdesv) "
                         + "VALUES (" + id + ", " + i + ", "
                         + Double.toString(coefMean[i]) + ", "
@@ -82,8 +82,8 @@ public class DB {
         Statement s = conexion.createStatement();
         ResultSet rs = s.executeQuery("SELECT coef,mean,stdesv FROM spk_coef WHERE spk_id = " + id);
 
-        coefMean = new double[LPC.DEFAULT_POLES];
-        coefVariance = new double[LPC.DEFAULT_POLES];
+        coefMean = new double[ucungFeatureExtraction.DEFAULT_POLES];
+        coefVariance = new double[ucungFeatureExtraction.DEFAULT_POLES];
 
         while (rs.next()) {
             int indice = rs.getInt(1);

@@ -110,6 +110,12 @@ public class MARF
 	 */
 	public static final int PREPROCESSING_PLUGIN            = 108;
 
+        	/**
+	 * Indicates to employ UCUNG preprocessing
+	 * @since 0.3.0.3
+	 */
+	public static final int UCUNG_PREPROCESSING           = 109;
+
 	/**
 	 * Upper boundary for classificantion methods enumeration.
 	 * Used in error checks.
@@ -118,7 +124,7 @@ public class MARF
 	 *
 	 * @since 0.3.0.1
 	 */
-	public static final int MAX_PREPROCESSING_METHOD = PREPROCESSING_PLUGIN;
+	public static final int MAX_PREPROCESSING_METHOD = UCUNG_PREPROCESSING;
 
 	/**
 	 * Lower boundary for classificantion methods enumeration.
@@ -132,6 +138,7 @@ public class MARF
 	 * Feature Extraction Modules Enumeration
 	 * --------------------------------------------------------
 	 */
+
 
 	/**
 	 * Indicates to use LPC.
@@ -187,12 +194,17 @@ public class MARF
 	 */
 	public static final int FEATURE_EXTRACTION_AGGREGATOR = 308;
 
+        	/**
+	 * Indicates to use UCUNG.
+	 */
+	public static final int UCUNG_FEATURE_EXTRACTION    = 309;
+
 	/**
 	 * Upper boundary for classificantion methods enumeration.
 	 * Used in error checks. *Update it when add more methods.*
 	 * @since 0.3.0.1
 	 */
-	public static final int MAX_FEATUREEXTRACTION_METHOD = FEATURE_EXTRACTION_AGGREGATOR;
+	public static final int MAX_FEATUREEXTRACTION_METHOD = UCUNG_FEATURE_EXTRACTION;
 
 	/**
 	 * Lower boundary for classificantion methods enumeration.
@@ -275,12 +287,20 @@ public class MARF
 	 */
 	public static final int CLASSIFICATION_PLUGIN = 509;
 
+
+	/**
+	 * Indicates to employ user-defined classification plugin.
+	 * @since 0.3.0.3
+	 */
+	public static final int UCUNG_CLASSIFICATION = 510;
+
+	/**
 	/**
 	 * Upper boundary for classificantion methods enumeration.
 	 * Used in error checks. *Update it when add more methods.*
 	 * @since 0.3.0.1
 	 */
-	public static final int MAX_CLASSIFICATION_METHOD = CLASSIFICATION_PLUGIN;
+	public static final int MAX_CLASSIFICATION_METHOD = UCUNG_CLASSIFICATION;
 
 	/**
 	 * Lower boundary for classificantion methods enumeration.
@@ -542,7 +562,7 @@ public class MARF
 	 * @param piPreprocessingMethod one of the allowed preprocessing methods
 	 * @throws MARFException if the parameter outside of the valid range
 	 */
-	public static synchronized final void setPreprocessingMethod(final int piPreprocessingMethod)
+	public static synchronized void setPreprocessingMethod(final int piPreprocessingMethod)
 	throws MARFException
 	{
 		if(piPreprocessingMethod < MIN_PREPROCESSING_METHOD || piPreprocessingMethod > MAX_PREPROCESSING_METHOD)
@@ -561,7 +581,7 @@ public class MARF
 	 * Gets currently selected preprocessing method.
 	 * @return one of the preprocessing methods
 	 */
-	public static synchronized final int getPreprocessingMethod()
+	public static synchronized int getPreprocessingMethod()
 	{
 		return siPreprocessingMethod;
 	}
@@ -571,7 +591,7 @@ public class MARF
 	 * @param piFeatureExtractionMethod one of the allowed feature extraction methods
 	 * @throws MARFException if the parameter outside of the valid range
 	 */
-	public static synchronized final void setFeatureExtractionMethod(final int piFeatureExtractionMethod)
+	public static synchronized void setFeatureExtractionMethod(final int piFeatureExtractionMethod)
 	throws MARFException
 	{
 		if(piFeatureExtractionMethod < MIN_FEATUREEXTRACTION_METHOD || piFeatureExtractionMethod > MAX_FEATUREEXTRACTION_METHOD)
@@ -590,7 +610,7 @@ public class MARF
 	 * Gets currently selected feature extraction method.
 	 * @return current feature extraction method
 	 */
-	public static synchronized final int getFeatureExtractionMethod()
+	public static synchronized int getFeatureExtractionMethod()
 	{
 		return siFeatureExtractionMethod;
 	}
@@ -600,7 +620,7 @@ public class MARF
 	 * @param piClassificationMethod one of the allowed classification methods
 	 * @throws MARFException if the parameter outside of the valid range
 	 */
-	public static synchronized final void setClassificationMethod(final int piClassificationMethod)
+	public static synchronized void setClassificationMethod(final int piClassificationMethod)
 	throws MARFException
 	{
 		if(piClassificationMethod < MIN_CLASSIFICATION_METHOD || piClassificationMethod > MAX_CLASSIFICATION_METHOD)
@@ -619,7 +639,7 @@ public class MARF
 	 * Gets classification method to be used.
 	 * @return current classification method
 	 */
-	public static synchronized final int getClassificationMethod()
+	public static synchronized int getClassificationMethod()
 	{
 		return siClassificationMethod;
 	}
@@ -628,7 +648,7 @@ public class MARF
 	 * Sets input sample file format.
 	 * @param piSampleFormat one of the allowed sample formats
 	 */
-	public static synchronized final void setSampleFormat(final int piSampleFormat)
+	public static synchronized void setSampleFormat(final int piSampleFormat)
 	{
 		siSampleFormat = piSampleFormat;
 	}
@@ -637,7 +657,7 @@ public class MARF
 	 * Gets input sample file format.
 	 * @return current sample format
 	 */
-	public static synchronized final int getSampleFormat()
+	public static synchronized int getSampleFormat()
 	{
 		return siSampleFormat;
 	}
@@ -646,7 +666,7 @@ public class MARF
 	 * Sets input sample file name.
 	 * @param pstrFileName string representing sample file to be read
 	 */
-	public static synchronized final void setSampleFile(final String pstrFileName)
+	public static synchronized void setSampleFile(final String pstrFileName)
 	{
 		sstrFileName = pstrFileName;
 	}
@@ -655,7 +675,7 @@ public class MARF
 	 * Obtains filename of a sample currently being processed.
 	 * @return file name of a string representing sample file
 	 */
-	public static synchronized final String getSampleFile()
+	public static synchronized String getSampleFile()
 	{
 		return sstrFileName;
 	}
@@ -664,7 +684,7 @@ public class MARF
 	 * Sets directory with sample files to be read from.
 	 * @param pstrSamplesDir string representing directory name
 	 */
-	public static synchronized final void setSamplesDir(final String pstrSamplesDir)
+	public static synchronized void setSamplesDir(final String pstrSamplesDir)
 	{
 		sstrSamplesDir = pstrSamplesDir;
 	}
@@ -673,7 +693,7 @@ public class MARF
 	 * Sets module-specific parameters an application programmer wishes to pass on to the module.
 	 * @param poModuleParams parameters' instance
 	 */
-	public static synchronized final void setModuleParams(final ModuleParams poModuleParams)
+	public static synchronized void setModuleParams(final ModuleParams poModuleParams)
 	{
 		soModuleParams = poModuleParams;
 	}
@@ -682,7 +702,7 @@ public class MARF
 	 * Gets module-specific parameters an application programmer passed on to the module.
 	 * @return ModuleParams object reference
 	 */
-	public static synchronized final ModuleParams getModuleParams()
+	public static synchronized ModuleParams getModuleParams()
 	{
 		return soModuleParams;
 	}
@@ -691,7 +711,7 @@ public class MARF
 	 * Indicates whether spectrogram is wanted as an output of a FeatureExtraction module.
 	 * @param pbDump <code>true</code> if wanted, <code>false</code> if not
 	 */
-	public static synchronized final void setDumpSpectrogram(final boolean pbDump)
+	public static synchronized void setDumpSpectrogram(final boolean pbDump)
 	{
 		sbDumpSpectrogram = pbDump;
 	}
@@ -700,7 +720,7 @@ public class MARF
 	 * Whether spectrogram wanted or not.
 	 * @return <code>true</code> if spectrogram being dumped, <code>false</code> otherwise
 	 */
-	public static synchronized final boolean getDumpSpectrogram()
+	public static synchronized boolean getDumpSpectrogram()
 	{
 		return sbDumpSpectrogram;
 	}
@@ -709,7 +729,7 @@ public class MARF
 	 * Indicates whether wave graph is wanted as an output.
 	 * @param pbDump <code>true</code> if wanted, <code>false</code> if not
 	 */
-	public static synchronized final void setDumpWaveGraph(final boolean pbDump)
+	public static synchronized void setDumpWaveGraph(final boolean pbDump)
 	{
 		sbDumpWaveGraph = pbDump;
 	}
@@ -718,7 +738,7 @@ public class MARF
 	 * Whether wave graph wanted or not.
 	 * @return <code>true</code> if graph wanted being dumped, <code>false</code> otherwise
 	 */
-	public static synchronized final boolean getDumpWaveGraph()
+	public static synchronized boolean getDumpWaveGraph()
 	{
 		return sbDumpWaveGraph;
 	}
@@ -727,7 +747,7 @@ public class MARF
 	 * Sets ID of a subject currently being trained on.
 	 * @param piSubjectID integer ID of the subject
 	 */
-	public static synchronized final void setCurrentSubject(final int piSubjectID)
+	public static synchronized void setCurrentSubject(final int piSubjectID)
 	{
 		siCurrentSubject = piSubjectID;
 	}
@@ -737,7 +757,7 @@ public class MARF
 	 * @return integer ID of the subject
 	 * @since 0.2.0
 	 */
-	public static synchronized final int getCurrentSubject()
+	public static synchronized int getCurrentSubject()
 	{
 		return siCurrentSubject;
 	}
@@ -748,7 +768,7 @@ public class MARF
 	 * @throws MARFException if class cannot be loaded for any reason
 	 * @since 0.3.0.5
 	 */
-	public static synchronized final void setSampleLoaderPluginClass(String pstrClassName)
+	public static synchronized void setSampleLoaderPluginClass(String pstrClassName)
 	throws MARFException
 	{
 		try
@@ -767,7 +787,7 @@ public class MARF
 	 * @throws MARFException if the parameter is <code>null</code>
 	 * @since 0.3.0.5
 	 */
-	public static synchronized final void setSampleLoaderPluginClass(Class poClass)
+	public static synchronized void setSampleLoaderPluginClass(Class poClass)
 	throws MARFException
 	{
 		if(poClass == null)
@@ -783,7 +803,7 @@ public class MARF
 	 * @return the internal plugin class
 	 * @since 0.3.0.5
 	 */
-	public static synchronized final Class getSampleLoaderPluginClass()
+	public static synchronized Class getSampleLoaderPluginClass()
 	{
 		return soSampleLoaderPluginClass; 
 	}
@@ -794,7 +814,7 @@ public class MARF
 	 * @throws MARFException if class cannot be loaded for any reason
 	 * @since 0.3.0.4
 	 */
-	public static synchronized final void setPreprocessingPluginClass(String pstrClassName)
+	public static synchronized void setPreprocessingPluginClass(String pstrClassName)
 	throws MARFException
 	{
 		try
@@ -813,7 +833,7 @@ public class MARF
 	 * @throws MARFException if the parameter is <code>null</code>
 	 * @since 0.3.0.4
 	 */
-	public static synchronized final void setPreprocessingPluginClass(Class poClass)
+	public static synchronized void setPreprocessingPluginClass(Class poClass)
 	throws MARFException
 	{
 		if(poClass == null)
@@ -829,7 +849,7 @@ public class MARF
 	 * @return the internal plugin class
 	 * @since 0.3.0.4
 	 */
-	public static synchronized final Class getPreprocessingPluginClass()
+	public static synchronized Class getPreprocessingPluginClass()
 	{
 		return soPreprocessingPluginClass; 
 	}
@@ -840,7 +860,7 @@ public class MARF
 	 * @throws MARFException if class cannot be loaded for any reason
 	 * @since 0.3.0.4
 	 */
-	public static synchronized final void setFeatureExtractionPluginClass(String pstrClassName)
+	public static synchronized void setFeatureExtractionPluginClass(String pstrClassName)
 	throws MARFException
 	{
 		try
@@ -859,7 +879,7 @@ public class MARF
 	 * @throws MARFException if the parameter is <code>null</code>
 	 * @since 0.3.0.4
 	 */
-	public static synchronized final void setFeatureExtractionPluginClass(Class poClass)
+	public static synchronized void setFeatureExtractionPluginClass(Class poClass)
 	throws MARFException
 	{
 		if(poClass == null)
@@ -875,7 +895,7 @@ public class MARF
 	 * @return the internal plugin class
 	 * @since 0.3.0.4
 	 */
-	public static synchronized final Class getFeatureExtractionPluginClass()
+	public static synchronized Class getFeatureExtractionPluginClass()
 	{
 		return soFeatureExtractionPluginClass; 
 	}
@@ -886,7 +906,7 @@ public class MARF
 	 * @throws MARFException if class cannot be loaded for any reason
 	 * @since 0.3.0.4
 	 */
-	public static synchronized final void setClassificationPluginClass(String pstrClassName)
+	public static synchronized void setClassificationPluginClass(String pstrClassName)
 	throws MARFException
 	{
 		try
@@ -905,7 +925,7 @@ public class MARF
 	 * @throws MARFException if the parameter is <code>null</code>
 	 * @since 0.3.0.4
 	 */
-	public static synchronized final void setClassificationPluginClass(Class poClass)
+	public static synchronized void setClassificationPluginClass(Class poClass)
 	throws MARFException
 	{
 		if(poClass == null)
@@ -921,7 +941,7 @@ public class MARF
 	 * @return the internal plugin class
 	 * @since 0.3.0.4
 	 */
-	public static synchronized final Class getClassificationPluginClass()
+	public static synchronized Class getClassificationPluginClass()
 	{
 		return soClassificationPluginClass; 
 	}
@@ -933,7 +953,7 @@ public class MARF
 	 * @return version String
 	 * @see #MINOR_REVISION
 	 */
-	public static final String getVersion()
+	public static String getVersion()
 	{
 		return Version.getStringVersion();
 	}
@@ -951,7 +971,7 @@ public class MARF
 	 * @see #REVISION
 	 * @see #MINOR_REVISION
 	 */
-	public static final int getIntVersion()
+	public static int getIntVersion()
 	{
 		return Version.getIntVersion();
 	}
@@ -970,7 +990,7 @@ public class MARF
 	 *
 	 * @since 0.3.0.3
 	 */
-	public static final double getDoubleVersion()
+	public static double getDoubleVersion()
 	{
 		return Version.getDoubleVersion();
 	}
@@ -979,7 +999,7 @@ public class MARF
 	 * Returns a string representation of the current MARF configuration.
 	 * @return configuration string
 	 */
-	public static synchronized final String getConfig()
+	public static synchronized String getConfig()
 	{
 		// TODO: more human-readable output
 		return new StringBuffer()
@@ -997,7 +1017,7 @@ public class MARF
 	 * @return Sample object
 	 * @since 0.2.0
 	 */
-	public static synchronized final Sample getSample()
+	public static synchronized Sample getSample()
 	{
 		return soSample;
 	}
@@ -1007,7 +1027,7 @@ public class MARF
 	 * @return SampleLoader object
 	 * @since 0.2.0
 	 */
-	public static synchronized final ISampleLoader getSampleLoader()
+	public static synchronized ISampleLoader getSampleLoader()
 	{
 		return soSampleLoader;
 	}
@@ -1017,7 +1037,7 @@ public class MARF
 	 * @return Preprocessing object
 	 * @since 0.2.0
 	 */
-	public static synchronized final IPreprocessing getPreprocessing()
+	public static synchronized IPreprocessing getPreprocessing()
 	{
 		return soPreprocessing;
 	}
@@ -1027,7 +1047,7 @@ public class MARF
 	 * @return FeatureExtraction object
 	 * @since 0.2.0
 	 */
-	public static synchronized final IFeatureExtraction getFeatureExtraction()
+	public static synchronized IFeatureExtraction getFeatureExtraction()
 	{
 		return soFeatureExtraction;
 	}
@@ -1037,7 +1057,7 @@ public class MARF
 	 * @return Classification object
 	 * @since 0.2.0
 	 */
-	public static synchronized final IClassification getClassification()
+	public static synchronized IClassification getClassification()
 	{
 		return soClassification;
 	}
@@ -1046,7 +1066,7 @@ public class MARF
 	 * Queries for the final classification result.
 	 * @return integer ID of the indentified subject
 	 */
-	public static synchronized final int queryResultID()
+	public static synchronized int queryResultID()
 	{
 		return soClassification.getResult().getID();
 	}
@@ -1055,7 +1075,7 @@ public class MARF
 	 * Gets the entire Result object of the likely outcome.
 	 * @return Result ID and all the stats of the classification
 	 */
-	public static synchronized final Result getResult()
+	public static synchronized Result getResult()
 	{
 		return soClassification.getResult();
 	}
@@ -1065,7 +1085,7 @@ public class MARF
 	 * @return ResultSet object with one or more results.
 	 * @since 0.3.0.2
 	 */
-	public static synchronized final ResultSet getResultSet()
+	public static synchronized ResultSet getResultSet()
 	{
 		return soClassification.getResultSet();
 	}
@@ -1078,7 +1098,7 @@ public class MARF
 	 * @throws MARFException if there was an error in the pipeline
 	 * or classification
 	 */
-	public static final void recognize()
+	public static void recognize()
 	throws MARFException
 	{
 		startRecognitionPipeline();
@@ -1100,7 +1120,7 @@ public class MARF
 	 * @throws MARFException if the subject is unset or there was
 	 * an error in training in the underlying classification module
 	 */
-	public static final void train()
+	public static void train()
 	throws MARFException
 	{
 		//if(siCurrentSubject == UNSET)
@@ -1142,7 +1162,7 @@ public class MARF
 	 * @see #train()
 	 * @see #recognize()
 	 */
-	private static final void startRecognitionPipeline()
+	private static void startRecognitionPipeline()
 	throws MARFException
 	{
 		/*
@@ -1272,7 +1292,7 @@ public class MARF
 	 * Not implemented.
 	 * @throws NotImplementedException
 	 */
-	public static synchronized final void streamedRecognition()
+	public static synchronized void streamedRecognition()
 	{
 		throw new NotImplementedException("MARF.streamedRecognition()");
 	}
@@ -1503,7 +1523,7 @@ public class MARF
 		 * Retrieves current smoothing method.
 		 * @return inner smoothing method
 		 */
-		public static synchronized final int getSmoothingMethod()
+		public static synchronized int getSmoothingMethod()
 		{
 			return siSmoothingMethod;
 		}
@@ -1539,7 +1559,7 @@ public class MARF
 		 * Retrieves current n-gram modeld.
 		 * @return inner n-gram model
 		 */
-		public static synchronized final int getNgramModel()
+		public static synchronized int getNgramModel()
 		{
 			return siNgramModel;
 		}
@@ -1551,7 +1571,7 @@ public class MARF
 		 * @see ENgramModels#MIN_NGRAM_MODEL
 		 * @see ENgramModels#MAX_NGRAM_MODEL
 		 */
-		public static synchronized final void setNgramModel(final int piNgramModel)
+		public static synchronized void setNgramModel(final int piNgramModel)
 		throws NLPException
 		{
 			if(piNgramModel < ENgramModels.MIN_NGRAM_MODEL || piNgramModel > ENgramModels.MAX_NGRAM_MODEL)

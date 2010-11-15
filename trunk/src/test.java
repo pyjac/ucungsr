@@ -13,6 +13,7 @@ import marf.Classification.Distance.DiffDistance;
 import marf.Classification.Distance.Distance;
 import marf.Classification.Distance.EuclideanDistance;
 import marf.Classification.Distance.MahalanobisDistance;
+import marf.Classification.Distance.ucungClassification;
 import marf.Classification.Distance.MinkowskiDistance;
 import marf.Classification.Markov.Markov;
 import marf.Classification.NeuralNetwork.Layer;
@@ -31,6 +32,7 @@ import marf.FeatureExtraction.Cepstral.Cepstral;
 import marf.FeatureExtraction.F0.F0;
 import marf.FeatureExtraction.FFT.FFT;
 import marf.FeatureExtraction.LPC.LPC;
+import marf.FeatureExtraction.ucung.ucungFeatureExtraction;
 import marf.FeatureExtraction.MinMaxAmplitudes.MinMaxAmplitudes;
 import marf.FeatureExtraction.RandomFeatureExtraction.RandomFeatureExtraction;
 import marf.FeatureExtraction.Segmentation.Segmentation;
@@ -356,6 +358,7 @@ public class test
 			FeatureExtractionFactory.class.getName() + ": " + FeatureExtractionFactory.getMARFSourceCodeRevision() + "\n" +
 			FFT.class.getName() + ": " + FFT.getMARFSourceCodeRevision() + "\n" +
 			LPC.class.getName() + ": " + LPC.getMARFSourceCodeRevision() + "\n" +
+			ucungFeatureExtraction.class.getName() + ": " + ucungFeatureExtraction.getMARFSourceCodeRevision() + "\n" +
 			MinMaxAmplitudes.class.getName() + ": " + MinMaxAmplitudes.getMARFSourceCodeRevision() + "\n" +
 			F0.class.getName() + ": " + F0.getMARFSourceCodeRevision() + "\n" +
 			Cepstral.class.getName() + ": " + Cepstral.getMARFSourceCodeRevision() + "\n" +
@@ -378,7 +381,10 @@ public class test
 			EuclideanDistance.class.getName() + ": " + EuclideanDistance.getMARFSourceCodeRevision() + "\n" +
 			MinkowskiDistance.class.getName() + ": " + MinkowskiDistance.getMARFSourceCodeRevision() + "\n" +
 			MahalanobisDistance.class.getName() + ": " + MahalanobisDistance.getMARFSourceCodeRevision() + "\n" +
-			DiffDistance.class.getName() + ": " + DiffDistance.getMARFSourceCodeRevision() + "\n" +
+			ucungClassification.class.getName() + ": " + ucungClassification.getMARFSourceCodeRevision() + "\n" +
+			
+
+                        DiffDistance.class.getName() + ": " + DiffDistance.getMARFSourceCodeRevision() + "\n" +
 
 			Stochastic.class.getName() + ": " + Stochastic.getMARFSourceCodeRevision() + "\n" +
 			MaxProbabilityClassifier.class.getName() + ": " + MaxProbabilityClassifier.getMARFSourceCodeRevision() + "\n" +

@@ -117,7 +117,7 @@ implements Serializable, Cloneable
 	 */
 	public Result(final Result poResult)
 	{
-		this(poResult.getID(), poResult.getOutcome(), new String(poResult.getDescription()));
+		this(poResult.getID(), poResult.getOutcome(), poResult.getDescription());
 	}
 
 	/**
@@ -157,7 +157,7 @@ implements Serializable, Cloneable
 	 */
 	public String toString()
 	{
-		StringBuffer oBuffer = new StringBuffer();
+		StringBuilder oBuffer = new StringBuilder();
 
 		oBuffer
 			.append("[").append(this.iID).append(":")

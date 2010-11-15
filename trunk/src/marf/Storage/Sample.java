@@ -295,7 +295,7 @@ implements Serializable, Cloneable
 	 */
 	public String toString()
 	{
-		StringBuffer oData = new StringBuffer();
+		StringBuilder oData = new StringBuilder();
 
 		oData.append(this.oAudioFileFormat).append(", sample data length: ");
 		oData.append(this.adSample.length).append("\n");

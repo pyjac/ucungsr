@@ -87,7 +87,7 @@ implements Serializable, Cloneable
 	 */
 	public final void setFilename(String pstrFilename)
 	{
-		if(this.oFilenames.size() == 0)
+		if(this.oFilenames.isEmpty())
 		{
 			this.oFilenames.add(pstrFilename);
 		}
@@ -143,7 +143,7 @@ implements Serializable, Cloneable
 	{
 		try
 		{
-			StringBuffer oDump = new StringBuffer();
+			StringBuilder oDump = new StringBuilder();
 
 			oDump
 				.append(this.iSubjectID).append(",").append(this.adDataVector.length).append(",")

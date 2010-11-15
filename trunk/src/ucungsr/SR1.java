@@ -8,7 +8,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import marf.FeatureExtraction.LPC.LPC;
+import marf.FeatureExtraction.ucung.ucungFeatureExtraction;
 import marf.MARF;
 import marf.util.MARFException;
 
@@ -54,9 +54,12 @@ public class SR1 {
 
     private static void marfConfig() {
         try {
-            MARF.setPreprocessingMethod(MARF.DUMMY); // Normalizaci√≥n
-            MARF.setFeatureExtractionMethod(MARF.LPC); // TODO: Agregar dato de media y varianza para evaluar resultado
-            MARF.setClassificationMethod(MARF.MAHALANOBIS_DISTANCE);
+//            MARF.setPreprocessingMethod(MARF.DUMMY); // Normalizaci√≥n
+//            MARF.setFeatureExtractionMethod(MARF.LPC); // TODO: Agregar dato de media y varianza para evaluar resultado
+//            MARF.setClassificationMethod(MARF.MAHALANOBIS_DISTANCE);
+            MARF.setPreprocessingMethod(MARF.UCUNG_PREPROCESSING); // Normalizaci√≥n
+            MARF.setFeatureExtractionMethod(MARF.UCUNG_FEATURE_EXTRACTION); // TODO: Agregar dato de media y varianza para evaluar resultado
+            MARF.setClassificationMethod(MARF.UCUNG_CLASSIFICATION);
             MARF.setDumpSpectrogram(false);
             MARF.setSampleFormat(MARF.WAV);
 
@@ -118,13 +121,13 @@ public class SR1 {
             double[] featuesVector = caracteristicas(false);
             double detSigma = 1;
             double d2 = 0;
-            for (int i = 1; i < LPC.DEFAULT_POLES; i++) {
+            for (int i = 1; i < ucungFeatureExtraction.DEFAULT_POLES; i++) {
                 d2 += Math.pow(featuesVector[i] - mean[i], 2) / stdesv[i];
                 detSigma *= stdesv[i];
             }
 
 
-            double b = Math.pow(2 * Math.PI, LPC.DEFAULT_POLES - 1) * detSigma;
+            double b = Math.pow(2 * Math.PI, ucungFeatureExtraction.DEFAULT_POLES - 1) * detSigma;
             prob = Math.sqrt(Math.exp(-d2) / b);
 
         } catch (SQLException ex) {

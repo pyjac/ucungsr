@@ -312,7 +312,7 @@ implements Cloneable
 	 */
 	public synchronized String toString()
 	{
-		StringBuffer oBuffer = new StringBuffer();
+		StringBuilder oBuffer = new StringBuilder();
 
 		oBuffer
 			.append("Preprocessing params: ").append(this.oPreprocessingParams).append("\n")
