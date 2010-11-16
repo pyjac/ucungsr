@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ucungsr;
 
 import org.junit.After;
@@ -10,7 +9,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -43,30 +41,22 @@ public class MainTest {
     @Test
     public void testMain() {
         System.out.println("main");
-        String[] traingArgs = new String[3];
+        String[] args = new String[3];
+        args[0] = "-train";
+        args[1] = "waves/gustavo_1.wav";
+        args[2] = "1";
+        Main.main(args);
 
-        traingArgs[0] = "-train";
-        traingArgs[1] = "waves/gustavo_1.wav";
-        traingArgs[2] = "1";
+        args[1] = "waves/jesica_1.wav";
+        args[2] = "2";
+        Main.main(args);
 
-        Main.main(traingArgs);
+        args[0] = "-ident";
+        args[1] = "waves/jesica_2.wav";
+        Main.main(args);
 
-        traingArgs[1] = "waves/jesica_1.wav";
-        traingArgs[2] = "2";
-
-        Main.main(traingArgs);
-
-        String[] testingArgs = new String[2];
-
-        testingArgs[0] = "-ident";
-        testingArgs[1] = "waves/gustavo_3.wav";
-
-        Main.main(testingArgs);
-
-
-
+        
         // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
     }
-
 }
