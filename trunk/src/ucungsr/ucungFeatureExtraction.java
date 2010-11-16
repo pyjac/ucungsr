@@ -1,218 +1,39 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ucungsr;
 
-import java.util.Vector;
-
-import marf.MARF;
-import marf.FeatureExtraction.FeatureExtraction;
 import marf.FeatureExtraction.FeatureExtractionException;
+import marf.FeatureExtraction.IFeatureExtraction;
 import marf.Preprocessing.IPreprocessing;
-import marf.Storage.ModuleParams;
-import marf.gui.Spectrogram;
-import marf.math.Algorithms;
-import marf.util.Debug;
 
 /**
- * <p>Class LPC implements Linear Predictive Coding.</p>
  *
- * <p>$Id: LPC.java,v 1.40 2005/12/30 05:54:25 mokhov Exp $</p>
- *
- * @author Ian Clement
- * @author Serguei Mokhov
- *
- * @version $Revision: 1.40 $
- * @since 0.0.1
+ * @author mauricio
  */
-public class ucungFeatureExtraction
-        extends FeatureExtraction {
+public class ucungFeatureExtraction implements IFeatureExtraction {
 
-    /**
-     * Default window length of 128 elements.
-     * @since 0.3.0
-     */
-    public static final int DEFAULT_WINDOW_LENGTH = 128;
-    /**
-     * Default number of poles, 20.
-     * @since 0.3.0
-     */
-    public static final int DEFAULT_POLES = 10;
-    /**
-     * Number of poles.
-     * <p>A pole is a root of the denominator in the Laplace transform of the
-     * input-to-output representation of the speech signal.</p>
-     */
-    private int iPoles;
-    /**
-     * Window length.
-     */
-    private int iWindowLen;
-    /**
-     * For serialization versioning.
-     * When adding new members or make other structural
-     * changes regenerate this number with the
-     * <code>serialver</code> tool that comes with JDK.
-     * @since 0.3.0.4
-     */
-    private static final long serialVersionUID = 7960314467497310447L;
+    protected IPreprocessing oPreprocessing = null;
 
-    /**
-     * LPC Constructor.
-     * @param poPreprocessing Preprocessing module reference
-     */
-    public ucungFeatureExtraction(IPreprocessing poPreprocessing) {
-        super(poPreprocessing);
-        setDefaults();
-
-        // LPC-specific parameters, if any
-        ModuleParams oModuleParams = MARF.getModuleParams();
-
-        if (oModuleParams != null) {
-            Vector oParams = oModuleParams.getFeatureExtractionParams();
-
-            if (oParams.size() > 0) {
-                this.iPoles = ((Integer) oParams.elementAt(0)).intValue();
-                this.iWindowLen = ((Integer) oParams.elementAt(1)).intValue();
-            }
-        }
+    public boolean extractFeatures() throws FeatureExtractionException {
+        System.out.println("Feature Extraction...");
+        return true;
     }
 
-    /**
-     * Sets the default values of poles and window length if none
-     * were supplied by an application.
-     */
-    private void setDefaults() {
-        this.iPoles = DEFAULT_POLES;
-        this.iWindowLen = DEFAULT_WINDOW_LENGTH;
+    public double[] getFeaturesArray() {
+        throw new UnsupportedOperationException("Not supported yet 1.");
     }
 
-    /**
-     * LPC Implementation of <code>extractFeatures()</code>.
-     * @return <code>true</code> if features were extracted, <code>false</code> otherwise
-     * @throws FeatureExtractionException
-     */
-    public final boolean extractFeatures()
-            throws FeatureExtractionException {
-        try {
-            Debug.debug("LPC.extractFeatures() has begun...");
-
-            double[] adSample = this.oPreprocessing.getSample().getSampleArray();
-
-            Debug.debug("sample length: " + adSample.length);
-            Debug.debug("poles: " + this.iPoles);
-            Debug.debug("window length: " + this.iWindowLen);
-
-            Spectrogram oSpectrogram = null;
-
-            // For the case when we want intermediate spectrogram
-            if (MARF.getDumpSpectrogram() == true) {
-                oSpectrogram = new Spectrogram("lpc");
-            }
-
-            this.adFeatures = new double[this.iPoles];
-
-            double[] adWindowed = new double[this.iWindowLen];
-            double[] adLPCCoeffs = new double[this.iPoles];
-            double[] adLPCError = new double[this.iPoles];
-
-            // Number of windows
-            int iWindowsNum = 1;
-
-            int iHalfWindow = this.iWindowLen / 2;
-
-            this.coefVariance = new double[this.iPoles];
-
-            for (int i = 0; i < this.iPoles; i++) {
-                this.adFeatures[i] = 0;
-                this.coefVariance[i] = 0;
-            }
-
-            for (int iCount = iHalfWindow; (iCount + iHalfWindow) <= adSample.length; iCount += iHalfWindow) {
-                // Window the input.
-                for (int j = 0; j < this.iWindowLen; j++) {
-                    adWindowed[j] = adSample[iCount - iHalfWindow + j];
-                }
-
-                Algorithms.Hamming.hamming(adWindowed);
-                Algorithms.LPC.doLPC(adWindowed, adLPCCoeffs, adLPCError, this.iPoles);
-
-                if (MARF.getDumpSpectrogram() == true) {
-                    oSpectrogram.addLPC(adLPCCoeffs, this.iPoles, iHalfWindow);
-                }
-
-
-                // Collect features
-                double[] mean0 = new double[this.iPoles];
-                int i = (int) Math.floor((iCount - iHalfWindow) / iHalfWindow);
-
-                for (int j = 0; j < this.iPoles; j++) {
-                    mean0[j] = this.adFeatures[j];
-                    this.adFeatures[j] = (i * mean0[j] + adLPCCoeffs[j]) / (i + 1); // u_(N+1) = (N*u_N + x_(N+1))/N+1
-                    this.coefVariance[j] = (i * this.coefVariance[j] + i * Math.pow((mean0[j] - this.adFeatures[j]), 2) + Math.pow((adLPCCoeffs[j] - this.adFeatures[j]), 2)) / (i + 1);
-
-                }
-
-                iWindowsNum++;
-            }
-
-
-            Debug.debug("LPC.extractFeatures() - number of windows = " + iWindowsNum);
-
-            // For the case when we want intermediate spectrogram
-            if (MARF.getDumpSpectrogram() == true) {
-                oSpectrogram.dump();
-            }
-
-            Debug.debug("LPC.extractFeatures() has finished.");
-
-            return (this.adFeatures.length > 0);
-        } catch (Exception e) {
-            throw new FeatureExtractionException(e);
-        }
+    public double[] getFeaturesVaianceArray() {
+        throw new UnsupportedOperationException("Not supported yet 2.");
     }
 
-    /**
-     * Retrieves the number of poles.
-     * @return the number of poles
-     * @since 0.3.0.4
-     */
-    public int getPoles() {
-        return this.iPoles;
+    public IPreprocessing getPreprocessing() {
+        throw new UnsupportedOperationException("Not supported yet 3.");
     }
 
-    /**
-     * Allows setting the number of poles.
-     * @param piPoles new number of poles
-     * @since 0.3.0.4
-     */
-    public void setPoles(int piPoles) {
-        this.iPoles = piPoles;
-    }
-
-    /**
-     * Retrieves the window length.
-     * @return the window length
-     * @since 0.3.0.4
-     */
-    public int getWindowLength() {
-        return this.iWindowLen;
-    }
-
-    /**
-     * Allows setting the window length.
-     * @param piWindowLen the window length to set
-     * @since 0.3.0.4
-     */
-    public void setWindowLength(int piWindowLen) {
-        this.iWindowLen = piWindowLen;
-    }
-
-    /**
-     * Returns source code revision information.
-     * @return revision string
-     * @since 0.3.0.2
-     */
-    public static String getMARFSourceCodeRevision() {
-        return "$Revision: 1.40 $";
+    public void setPreprocessing(IPreprocessing poPreprocessing) {
+        this.oPreprocessing = poPreprocessing;
     }
 }
-// EOF
-

@@ -5,7 +5,8 @@ import marf.Classification.Distance.ChebyshevDistance;
 import marf.Classification.Distance.DiffDistance;
 import marf.Classification.Distance.EuclideanDistance;
 import marf.Classification.Distance.MahalanobisDistance;
-import ucungsr.ucungClassification;
+
+
 import marf.Classification.Distance.MinkowskiDistance;
 import marf.Classification.Markov.Markov;
 import marf.Classification.NeuralNetwork.NeuralNetwork;
@@ -64,7 +65,7 @@ public final class ClassificationFactory
 	 * @see RandomClassification
 	 * @see DiffDistance
 	 */
-	public static IClassification create(final Integer poClassificationMethod, IFeatureExtraction poFeatureExtraction)
+	public static final IClassification create(final Integer poClassificationMethod, IFeatureExtraction poFeatureExtraction)
 	throws ClassificationException
 	{
 		return create(poClassificationMethod.intValue(), poFeatureExtraction);
@@ -102,7 +103,7 @@ public final class ClassificationFactory
 	 * @see RandomClassification
 	 * @see DiffDistance
 	 */
-	public static IClassification create(final int piClassificationMethod, IFeatureExtraction poFeatureExtraction)
+	public static final IClassification create(final int piClassificationMethod, IFeatureExtraction poFeatureExtraction)
 	throws ClassificationException
 	{
 		IClassification oClassification = null;
@@ -143,10 +144,6 @@ public final class ClassificationFactory
 
 			case MARF.DIFF_DISTANCE:
 				oClassification = new DiffDistance(poFeatureExtraction);
-				break;
-
-                        case MARF.UCUNG_CLASSIFICATION:
-				oClassification = new ucungClassification(poFeatureExtraction);
 				break;
 
 			case MARF.CLASSIFICATION_PLUGIN:

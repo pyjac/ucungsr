@@ -368,7 +368,6 @@ implements Serializable, Cloneable
 	 * Returns inner ResultSet data converted to string.
 	 * @return String representation of a ResultSet object
 	 */
-    @Override
 	public String toString()
 	{
 		StringBuffer oSortedBuffer = new StringBuffer();
@@ -394,7 +393,7 @@ implements Serializable, Cloneable
 			oSortedBuffer.append(")");
 		}
 
-		StringBuilder oBuffer = new StringBuilder();
+		StringBuffer oBuffer = new StringBuffer();
 
 		oBuffer
 			.append("Raw ResultSet data:\n")
@@ -418,7 +417,6 @@ implements Serializable, Cloneable
 	 * @see java.lang.Object#clone()
 	 * @since 0.3.0.5
 	 */
-    @Override
 	public Object clone()
 	{
 		return new ResultSet(this);

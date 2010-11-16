@@ -2,7 +2,7 @@ package marf.Preprocessing;
 
 import marf.MARF;
 import marf.Preprocessing.Dummy.Dummy;
-import ucungsr.ucungPreprocessing;
+
 import marf.Preprocessing.Dummy.Raw;
 import marf.Preprocessing.Endpoint.Endpoint;
 import marf.Preprocessing.FFTFilter.BandpassFilter;
@@ -136,10 +136,6 @@ public final class PreprocessingFactory
 
 			case MARF.RAW:
 				oPreprocessing = new Raw(poSample);
-				break;
-                                
-			case MARF.UCUNG_PREPROCESSING:
-				oPreprocessing = new ucungPreprocessing(poSample);
 				break;
 
 			case MARF.PREPROCESSING_PLUGIN:

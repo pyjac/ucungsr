@@ -1,95 +1,46 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ucungsr;
 
-import marf.Classification.Distance.Distance;
+import marf.Classification.ClassificationException;
 import marf.Classification.IClassification;
 import marf.FeatureExtraction.IFeatureExtraction;
-import marf.math.Matrix;
-import marf.util.Debug;
+import marf.Storage.Result;
+import marf.Storage.ResultSet;
 
 
-/**
- * <p>Mahalanobis Distance Classification Module.</p>
- *
- * <p><b>NOTE</b>: Implemented as equivalent to Euclidean Distance in 0.2.0, i.e.
- * the Covariance matrix is always an Indentity one.</p>
- *
- * <p>$Id: MahalanobisDistance.java,v 1.21 2005/08/12 20:02:56 susan_fan Exp $</p>
- *
- * @author Serguei Mokhov
- * @version $Revision: 1.21 $
- * @since 0.2.0
+/*
+ * @author mauricio
  */
 public class ucungClassification
-extends Distance
-{
-    
-	/**
-	 * Covariance Matrix.
-	 */
-	private Matrix oC = null;
+        implements IClassification {
 
-	/**
-	 * MahalanobisDistance Constructor.
-	 * @param poFeatureExtraction FeatureExtraction module reference
-	 */
-	public ucungClassification(IFeatureExtraction poFeatureExtraction)
-	{
-		super(poFeatureExtraction);
+    protected IFeatureExtraction oFeatureExtraction = null;
 
-		int iD = this.oFeatureExtraction.getFeaturesArray().length;
+    public boolean classify() throws ClassificationException {
+        System.out.println("Classifying...");
+        return true;
+    }
 
-		this.oC = new Matrix(iD, iD);
+    public boolean train() throws ClassificationException {
+        throw new UnsupportedOperationException("Not supported yet 1.");
+    }
 
-		/*
-		 * Make the default an indetity matrix rendering it at least
-		 * equivalent to Euclidean distance. Will be fixed in 0.3.*
-		 */
-		this.oC.makeIdentity();
-	}
+    public Result getResult() {
+        throw new UnsupportedOperationException("Not supported yet 2.");
+    }
 
-	/**
-	 * Partial MahalanobisDistance implementation.
-	 * @param paVector1 first vector to compare
-	 * @param paVector2 second vector to compare
-	 * @return Mahalanobis distance between two feature vectors
-	 */
-	public final double distance(final double[] paVector1, final double[] paVector2)
-	{
-		Debug.debug
-		(
-			"MahalanobisDistance.distance() - WARNING:  Mahalanobis distance is equivalent " +
-			"to Euclidean as there is no learning of the co-variance matrix."
-		);
+    public ResultSet getResultSet() {
+        throw new UnsupportedOperationException("Not supported yet 3.");
+    }
 
-		double dDistance = 0.0;
+    public IFeatureExtraction getFeatureExtraction() {
+        throw new UnsupportedOperationException("Not supported yet 4.");
+    }
 
-		Matrix oVector1 = new Matrix(paVector1);
-		Matrix oVector2 = new Matrix(paVector2);
-
-		Matrix oDifferenceVector = oVector1.minus(oVector2);
-
-		Matrix oTransposedVector = (Matrix)oDifferenceVector.clone();
-		oTransposedVector.transpose();
-
-		this.oC.inverse();
-
-                System.out.println(oVector1.toString());
-                System.out.println(oVector2.toString());
-
-		dDistance = Math.sqrt(oDifferenceVector.multiply(this.oC).multiply(oTransposedVector).getElement(0,0));
-
-                return dDistance;
-	}
-
-	/**
-	 * Retrieves class' revision.
-	 * @return revision string
-	 * @since 0.3.0
-	 */
-	public static String getMARFSourceCodeRevision()
-	{
-		return "$Revision: 1.21 $";
-	}
+    public void setFeatureExtraction(IFeatureExtraction poFeatureExtraction) {
+        this.oFeatureExtraction = poFeatureExtraction;
+    }
 }
-
-// EOF

@@ -1,4 +1,4 @@
-package marf.Preprocessing.Dummy;
+package ucungsr;
 
 import marf.Preprocessing.IPreprocessing;
 import marf.Preprocessing.Preprocessing;
@@ -17,7 +17,7 @@ import marf.util.Debug;
  * @version $Revision: 1.25 $
  * @since 0.0.1
  */
-public class Dummy
+public class ucungPreprocessing_
 extends Preprocessing
 {
 	/**
@@ -35,7 +35,7 @@ extends Preprocessing
 	 * for the frameworked modules.
 	 * @since 0.3.0.5
 	 */
-	public Dummy()
+	public ucungPreprocessing_()
 	{
 		super();
 	}
@@ -46,7 +46,7 @@ extends Preprocessing
 	 * @throws PreprocessingException
 	 * @since 0.3.0.3
 	 */
-	public Dummy(IPreprocessing poPreprocessing)
+	public ucungPreprocessing_(IPreprocessing poPreprocessing)
 	throws PreprocessingException
 	{
 		super(poPreprocessing);
@@ -57,7 +57,7 @@ extends Preprocessing
 	 * @param poSample incomping sample
 	 * @throws PreprocessingException
 	 */
-	public Dummy(Sample poSample)
+	public ucungPreprocessing_(Sample poSample)
 	throws PreprocessingException
 	{
 		super(poSample);
@@ -71,7 +71,7 @@ extends Preprocessing
 	public boolean preprocess()
 	throws PreprocessingException
 	{
-		return normalize();
+		return (normalize() && removeSilence());
 	}
 
 	/**
@@ -79,6 +79,7 @@ extends Preprocessing
 	 * @return <code>false</code>
 	 * @throws PreprocessingException never thrown
 	 */
+    @Override
 	public final boolean removeNoise()
 	throws PreprocessingException
 	{
@@ -105,6 +106,7 @@ extends Preprocessing
 	 * @return <code>false</code>
 	 * @throws PreprocessingException never thrown
 	 */
+    @Override
 	public final boolean cropAudio(double pdStartingFrequency, double pdEndFrequency)
 	throws PreprocessingException
 	{

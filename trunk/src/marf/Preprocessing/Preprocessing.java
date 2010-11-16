@@ -202,7 +202,7 @@ public abstract class Preprocessing
 
         double[] outSamples = new double[indice];
 
-//        System.out.println("in\t" + inSamples.length + "\tout\t" + outSamples.length);
+        System.out.println("in\t" + inSamples.length + "\tout\t" + outSamples.length);
 
         System.arraycopy(tmpOutSamples, 0, outSamples, 0, indice);
 
