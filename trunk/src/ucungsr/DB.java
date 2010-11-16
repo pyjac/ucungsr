@@ -7,7 +7,6 @@ package ucungsr;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import marf.FeatureExtraction.ucung.ucungFeatureExtraction;
 
 /**
  *

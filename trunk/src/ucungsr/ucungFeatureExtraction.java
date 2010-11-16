@@ -1,4 +1,4 @@
-package marf.FeatureExtraction.ucung;
+package ucungsr;
 
 import java.util.Vector;
 
@@ -118,8 +118,6 @@ public class ucungFeatureExtraction
 
             int iHalfWindow = this.iWindowLen / 2;
 
-
-//            this.coefMean = new double[this.iPoles];
             this.coefVariance = new double[this.iPoles];
 
             for (int i = 0; i < this.iPoles; i++) {
@@ -131,8 +129,6 @@ public class ucungFeatureExtraction
                 // Window the input.
                 for (int j = 0; j < this.iWindowLen; j++) {
                     adWindowed[j] = adSample[iCount - iHalfWindow + j];
-                    //windowed[j] = adSample[count - iHalfWindow + j] * hamming(j, this.windowLen);
-                    //Debug.debug("window: " + windowed[j]);
                 }
 
                 Algorithms.Hamming.hamming(adWindowed);
@@ -147,32 +143,15 @@ public class ucungFeatureExtraction
                 double[] mean0 = new double[this.iPoles];
                 int i = (int) Math.floor((iCount - iHalfWindow) / iHalfWindow);
 
-//                System.out.println("");
-
                 for (int j = 0; j < this.iPoles; j++) {
                     mean0[j] = this.adFeatures[j];
                     this.adFeatures[j] = (i * mean0[j] + adLPCCoeffs[j]) / (i + 1); // u_(N+1) = (N*u_N + x_(N+1))/N+1
                     this.coefVariance[j] = (i * this.coefVariance[j] + i * Math.pow((mean0[j] - this.adFeatures[j]), 2) + Math.pow((adLPCCoeffs[j] - this.adFeatures[j]), 2)) / (i + 1);
 
-//                    System.out.print(Double.toString(adLPCCoeffs[j]).replaceAll("\\.", ",") + "\t");
-
-//                    adFeatures[j] += adLPCCoeffs[j];
-                    //Debug.debug("lpc_coeffs[" + j + "]"  + lpc_coeffs[j]);
                 }
 
                 iWindowsNum++;
             }
-
-
-
-//                System.out.println("");
-
-            // Smoothing
-//            if (iWindowsNum > 1) {
-//                for (int j = 0; j < this.iPoles; j++) {
-//                    adFeatures[j] /= iWindowsNum;
-//                }
-//            }
 
 
             Debug.debug("LPC.extractFeatures() - number of windows = " + iWindowsNum);

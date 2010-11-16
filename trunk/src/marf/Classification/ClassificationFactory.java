@@ -5,7 +5,7 @@ import marf.Classification.Distance.ChebyshevDistance;
 import marf.Classification.Distance.DiffDistance;
 import marf.Classification.Distance.EuclideanDistance;
 import marf.Classification.Distance.MahalanobisDistance;
-import marf.Classification.Distance.ucungClassification;
+import ucungsr.ucungClassification;
 import marf.Classification.Distance.MinkowskiDistance;
 import marf.Classification.Markov.Markov;
 import marf.Classification.NeuralNetwork.NeuralNetwork;

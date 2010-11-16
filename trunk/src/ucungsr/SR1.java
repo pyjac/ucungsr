@@ -8,7 +8,6 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import marf.FeatureExtraction.ucung.ucungFeatureExtraction;
 import marf.MARF;
 import marf.util.MARFException;
 
@@ -57,9 +56,19 @@ public class SR1 {
 //            MARF.setPreprocessingMethod(MARF.DUMMY); // Normalizaci√≥n
 //            MARF.setFeatureExtractionMethod(MARF.LPC); // TODO: Agregar dato de media y varianza para evaluar resultado
 //            MARF.setClassificationMethod(MARF.MAHALANOBIS_DISTANCE);
-            MARF.setPreprocessingMethod(MARF.UCUNG_PREPROCESSING); // Normalizaci√≥n
+
+//            MARF.setPreprocessingPluginClass("ucungsr.ucungPreprocessing");
+//            MARF.setPreprocessingMethod(MARF.PREPROCESSING_PLUGIN);
+            MARF.setPreprocessingMethod(MARF.UCUNG_PREPROCESSING);
+
+//            MARF.setFeatureExtractionPluginClass("ucungsr.ucungFeatureExtraction");
+//            MARF.setFeatureExtractionMethod(MARF.FEATURE_EXTRACTION_PLUGIN);
             MARF.setFeatureExtractionMethod(MARF.UCUNG_FEATURE_EXTRACTION); // TODO: Agregar dato de media y varianza para evaluar resultado
+
+//            MARF.setClassificationPluginClass("ucungsr.ucungClassification");
+//            MARF.setClassificationMethod(MARF.CLASSIFICATION_PLUGIN);
             MARF.setClassificationMethod(MARF.UCUNG_CLASSIFICATION);
+
             MARF.setDumpSpectrogram(false);
             MARF.setSampleFormat(MARF.WAV);
 

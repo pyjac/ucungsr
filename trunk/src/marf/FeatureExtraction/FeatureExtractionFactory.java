@@ -5,7 +5,7 @@ import marf.FeatureExtraction.Cepstral.Cepstral;
 import marf.FeatureExtraction.F0.F0;
 import marf.FeatureExtraction.FFT.FFT;
 import marf.FeatureExtraction.LPC.LPC;
-import marf.FeatureExtraction.ucung.ucungFeatureExtraction;
+import ucungsr.ucungFeatureExtraction;
 import marf.FeatureExtraction.MinMaxAmplitudes.MinMaxAmplitudes;
 import marf.FeatureExtraction.RandomFeatureExtraction.RandomFeatureExtraction;
 import marf.FeatureExtraction.Segmentation.Segmentation;

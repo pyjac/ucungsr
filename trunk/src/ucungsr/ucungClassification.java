@@ -1,5 +1,7 @@
-package marf.Classification.Distance;
+package ucungsr;
 
+import marf.Classification.Distance.Distance;
+import marf.Classification.IClassification;
 import marf.FeatureExtraction.IFeatureExtraction;
 import marf.math.Matrix;
 import marf.util.Debug;
@@ -20,15 +22,7 @@ import marf.util.Debug;
 public class ucungClassification
 extends Distance
 {
-    /**
-	 * For serialization versioning.
-	 * When adding new members or make other structural
-	 * changes regenerate this number with the
-	 * <code>serialver</code> tool that comes with JDK.
-	 * @since 0.3.0.4
-	 */
-	private static final long serialVersionUID = -6720267386878796592L;
-
+    
 	/**
 	 * Covariance Matrix.
 	 */
@@ -79,9 +73,12 @@ extends Distance
 
 		this.oC.inverse();
 
+                System.out.println(oVector1.toString());
+                System.out.println(oVector2.toString());
+
 		dDistance = Math.sqrt(oDifferenceVector.multiply(this.oC).multiply(oTransposedVector).getElement(0,0));
 
-		return dDistance;
+                return dDistance;
 	}
 
 	/**

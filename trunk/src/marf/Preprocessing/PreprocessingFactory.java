@@ -2,7 +2,7 @@ package marf.Preprocessing;
 
 import marf.MARF;
 import marf.Preprocessing.Dummy.Dummy;
-import marf.Preprocessing.ucung.ucungPreprocessing;
+import ucungsr.ucungPreprocessing;
 import marf.Preprocessing.Dummy.Raw;
 import marf.Preprocessing.Endpoint.Endpoint;
 import marf.Preprocessing.FFTFilter.BandpassFilter;
