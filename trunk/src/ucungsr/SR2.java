@@ -35,13 +35,21 @@ public class SR2 {
     private static Sample soSample = null;
     private static IFeatureExtraction soFeatureExtraction = null;
     private static IClassification soClassification = null;
+    private Storage db = null;
+    private Speaker[] speakers = null;
+    private Speaker speaker = null;
 
     SR2(String[] args) {
         sstrFileName = args[0];
 
+        //levanto base de datos para tenerla en menoria:
+        loadDB();
+
+
+        //configuro MARF:
         marfConfig();
 
-        //Cargo archivo en MARF:
+        //Cargo archivo de audio en MARF:
         loadFile();
 
         //Preprocesamiento:
@@ -50,9 +58,13 @@ public class SR2 {
         //Extracción de características:
         featureExtraction();
 
-        //Clasificación:
-        classification();
-
+        if (args.length > 1 && args[1].equals("-insert")) {
+            //Guardo en Base de datos:
+            saveFeatureExtraction();
+        } else {
+            //Clasificación:
+            classification();
+        }
     }
 
     private void loadFile() {
@@ -70,18 +82,18 @@ public class SR2 {
     private static void marfConfig() {
         try {
             MARF.setPreprocessingPluginClass("ucungsr.ucungPreprocessing");
-            MARF.setPreprocessingMethod(MARF.PREPROCESSING_PLUGIN);
+            MARF.setPreprocessingMethod(MARF.DUMMY);
 
             MARF.setFeatureExtractionPluginClass("ucungsr.ucungFeatureExtraction");
-            MARF.setFeatureExtractionMethod(MARF.FEATURE_EXTRACTION_PLUGIN);
+            MARF.setFeatureExtractionMethod(MARF.LPC);
 
             MARF.setClassificationPluginClass("ucungsr.ucungClassification");
-            MARF.setClassificationMethod(MARF.CLASSIFICATION_PLUGIN);
+            MARF.setClassificationMethod(MARF.MAHALANOBIS_DISTANCE);
 
             MARF.setSampleFormat(MARF.WAV);
             MARF.setDumpSpectrogram(false);
 
-            
+
         } catch (MARFException e) {
             System.err.println(e.getMessage());
             e.printStackTrace(System.err);
@@ -94,7 +106,6 @@ public class SR2 {
             soPreprocessing = PreprocessingFactory.create(MARF.getPreprocessingMethod(), soSample);
             boolean preprocess = soPreprocessing.preprocess();
         } catch (PreprocessingException ex) {
-            Logger.getLogger(SR2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -102,18 +113,49 @@ public class SR2 {
         try {
             soFeatureExtraction = FeatureExtractionFactory.create(MARF.getFeatureExtractionMethod(), soPreprocessing);
             boolean extractFeatures = soFeatureExtraction.extractFeatures();
+
+            speaker = new Speaker();
+            speaker.setMeanVector(soFeatureExtraction.getFeaturesArray());
+            speaker.setVarianceVector(soFeatureExtraction.getFeaturesVaianceArray());
+
         } catch (FeatureExtractionException ex) {
-            Logger.getLogger(SR2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void classification() {
+
+        Classifier classifier = new Classifier(speaker, speakers);
+        int id = classifier.getMostProbableId();
+        System.out.println("Speaker ID:\t"+id);
+
+        double prob = classifier.getProbability();
+        System.out.println("Probability:\t"+Double.toString(prob));
+
         try {
             soClassification = ClassificationFactory.create(MARF.getClassificationMethod(), soFeatureExtraction);
             boolean classify = soClassification.classify();
-        } catch (ClassificationException ex) {
-            Logger.getLogger(SR2.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
+
+            System.out.println(soClassification.getResult().getDescription());
+            soClassification.getResultSet().size();
+//            System.out.println(Double.toString(soClassification.getResult().getOutcome()));
+//            Result[] rs = soClassification.getResultSet().getResultSetSorted();
+//            System.out.println(rs[1].getOutcome());
+
+//            System.out.println(soClassification.getResult().getID());
+//            System.out.println(soClassification.getResult().getOutcome());
+
+        } catch (ClassificationException ex) {
+        }
+    }
+
+    private void saveFeatureExtraction() {
+        int saveSpeaker = db.saveSpeaker(speaker);
+        
+    }
+
+    private void loadDB() {
+        db = new Storage();
+        speakers = db.getSpeakers();
     }
 }

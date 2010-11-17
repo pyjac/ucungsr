@@ -138,7 +138,6 @@ public class ucungFeatureExtraction_
                     oSpectrogram.addLPC(adLPCCoeffs, this.iPoles, iHalfWindow);
                 }
 
-
                 // Collect features
                 double[] mean0 = new double[this.iPoles];
                 int i = (int) Math.floor((iCount - iHalfWindow) / iHalfWindow);
@@ -147,7 +146,6 @@ public class ucungFeatureExtraction_
                     mean0[j] = this.adFeatures[j];
                     this.adFeatures[j] = (i * mean0[j] + adLPCCoeffs[j]) / (i + 1); // u_(N+1) = (N*u_N + x_(N+1))/N+1
                     this.coefVariance[j] = (i * this.coefVariance[j] + i * Math.pow((mean0[j] - this.adFeatures[j]), 2) + Math.pow((adLPCCoeffs[j] - this.adFeatures[j]), 2)) / (i + 1);
-
                 }
 
                 iWindowsNum++;
