@@ -123,13 +123,18 @@ public class SR2 {
     }
 
     private void classification() {
-
+speaker.setName("?");
         Classifier classifier = new Classifier(speaker, speakers);
-        int id = classifier.getMostProbableId();
-        System.out.println("Speaker ID:\t"+id);
+        int id = classifier.getMostProbableSpeaker().getId();
+        String name = classifier.getMostProbableSpeaker().getName();
+        System.out.println("Most probable speaker ID:\t"+id+"\tname:\t"+name);
 
-        double prob = classifier.getProbability();
-        System.out.println("Probability:\t"+Double.toString(prob));
+        double prob = classifier.getHighestProbability();
+        System.out.println("Highest probability:\t"+Double.toString(prob));
+
+        prob = classifier.getProbabilities()[1];
+        System.out.println("Highest probability:\t"+Double.toString(prob));
+
 
         try {
             soClassification = ClassificationFactory.create(MARF.getClassificationMethod(), soFeatureExtraction);

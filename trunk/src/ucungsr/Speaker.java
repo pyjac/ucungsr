@@ -22,9 +22,14 @@ public class Speaker {
 
     @Override
     public String toString() {
-        return "Speaker{" + "meanVector=" + meanVector + "varianceVector=" + varianceVector + "asociatedPhones=" + asociatedPhones + "asociatedWaveFiles=" + asociatedWaveFiles + "name=" + name + "id=" + id + '}';
-    }
+        String mean = "meanVector\t";
+        for(int i = 0; i<meanVector.length;i++){
+                mean += Double.toString(meanVector[i])+" ";
+        }
 
+        return "ID\t" + id + "\tName\t" + name+"\n"+mean;
+    }
+    
     public double[] getMeanVector() {
         return meanVector;
     }

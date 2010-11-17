@@ -43,16 +43,16 @@ public class SR2Test {
 
         //Entreno con Gustavo:
         args[0] = "waves/gustavo_1.wav";
-        SR2 sr2 = new SR2(args);
+//        SR2 sr2 = new SR2(args);
 
         //Entreno con Jesica:
         args[0] = "waves/jesica_1.wav";
-        sr2 = new SR2(args);
+//        sr2 = new SR2(args);
 
         //Identifico a Jesica:
         args = new String[1];
-        args[0] = "waves/jesica_2.wav";
-        sr2 = new SR2(args);
+        args[0] = "waves/gustavo_1.wav";
+        SR2 sr2 = new SR2(args);
 
     }
 
