@@ -59,53 +59,47 @@ public class Storage {
 
             s.removeOpenResultSet(rs);
 
-            query = "SELECT s.id, s.name, fs.index, fs.mean, fs.variance "
+            query = "SELECT s.id, s.name, count(fs.index) c "
                     + "FROM features_stats fs "
                     + "JOIN speakers s ON s.id = fs.spk_id "
-                    + "ORDER BY fs.spk_id, fs.index";
+                    + "GROUP BY fs.spk_id "
+                    + "ORDER BY fs.spk_id";
             rs = s.executeQuery(query);
 
-            int id = -1;
-            int n = 0;
 
             this.speakers = new Speaker[numSpeaker];
 
-            double[][] mean = new double[numSpeaker][vectorSize];
-            double[][] variance = new double[numSpeaker][vectorSize];
-
             while (rs.next()) {
-                int index = rs.getInt(3);
-                mean[n][index] = rs.getDouble(4);
-                variance[n][index] = rs.getDouble(5);
-                if (rs.getInt(1) != id) {
-                    speakers[n] = new Speaker();
-                    id = rs.getInt(1);
-                    speakers[n].setId(id);
-                    speakers[n].setName(rs.getString(2));
-
-//                    System.out.println("n:" + n);
-
-                    if (!rs.isFirst()) {
-                        speakers[n - 1].setMeanVector(mean[n]);
-                        speakers[n - 1].setVarianceVector(variance[n]);
-                    }
-
-                    if (n < numSpeaker - 1) {
-                        n++;
-                    }
-                }
-
-                if (rs.isLast()) {
-                    speakers[n].setMeanVector(mean[n]);
-                    speakers[n].setVarianceVector(variance[n]);
-                }
-
+                speakers[rs.getRow() - 1] = new Speaker();
+                speakers[rs.getRow() - 1].setId(rs.getInt("id"));
+                speakers[rs.getRow() - 1].setName(rs.getString("name"));
+                speakers[rs.getRow() - 1].setMeanVector(new double[rs.getInt("c")]);
+                speakers[rs.getRow() - 1].setVarianceVector(new double[rs.getInt("c")]);
             }
 
-            System.out.println("Speakers:\t" + speakers.length);
-            for (int i = 0; i < speakers.length; i++) {
-                System.out.println(speakers[i].toString());
+            s.removeOpenResultSet(rs);
+
+            query = "SELECT * FROM features_stats ORDER BY spk_id";
+            rs = s.executeQuery(query);
+
+
+            double[] mean = null;
+            double[] variance = null;
+            int id = -1;
+            int n = 0;
+            while (rs.next()) {
+                if (rs.getInt("spk_id") != id) {
+                    id = rs.getInt("spk_id");
+                    mean = speakers[n].getMeanVector();
+                    variance = speakers[n].getVarianceVector();
+                    n++;
+                }
+                mean[rs.getInt("index")] = rs.getDouble("mean");
+                variance[rs.getInt("index")] = rs.getDouble("variance");
+                speakers[n - 1].setMeanVector(mean);
+                speakers[n - 1].setVarianceVector(variance);
             }
+
 
         } catch (SQLException ex) {
             Logger.getLogger(Storage.class.getName()).log(Level.SEVERE, null, ex);

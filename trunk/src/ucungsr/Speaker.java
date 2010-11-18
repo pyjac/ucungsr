@@ -26,8 +26,12 @@ public class Speaker {
         for(int i = 0; i<meanVector.length;i++){
                 mean += Double.toString(meanVector[i])+" ";
         }
+        String variance = "varianceVector\t";
+        for(int i = 0; i<varianceVector.length;i++){
+                variance += Double.toString(varianceVector[i])+" ";
+        }
 
-        return "ID\t" + id + "\tName\t" + name+"\n"+mean;
+        return "ID\t" + id + "\tName\t" + name+"\n"+mean+"\n"+variance;
     }
     
     public double[] getMeanVector() {

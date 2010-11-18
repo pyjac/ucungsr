@@ -49,8 +49,8 @@ public final class Classifier {
     }
 
     private double calculate(Speaker spk1, Speaker spk2) {
-        System.out.println("calculating '" + spk1.getName() + "' against '" + spk2.getName() + "'...");
-        System.out.println(spk2.toString());
+//        System.out.println("calculating '" + spk1.getName() + "' against '" + spk2.getName() + "'...");
+//        System.out.println(spk2.toString());
         int D = spk1.getMeanVector().length;
         double detSigma = 1.0;
         double d2 = 0.0;
@@ -60,7 +60,7 @@ public final class Classifier {
         }
         
         double prob = Math.sqrt(Math.exp(-d2) / Math.pow(2 * Math.PI, D - 1) * detSigma);
-        System.out.println("Probability:" + Double.toString(prob));
+//        System.out.println("Probability:" + Double.toString(prob));
         return prob;
     }
 

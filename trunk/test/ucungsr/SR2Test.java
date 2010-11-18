@@ -51,7 +51,7 @@ public class SR2Test {
 
         //Identifico a Jesica:
         args = new String[1];
-        args[0] = "waves/gustavo_1.wav";
+        args[0] = "waves/jesica_2.wav";
         SR2 sr2 = new SR2(args);
 
     }
