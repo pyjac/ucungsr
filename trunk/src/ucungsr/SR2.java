@@ -125,29 +125,35 @@ public class SR2 {
     private void classification() {
         speaker.setName("?");
         Classifier classifier = new Classifier(speaker, speakers);
+
+        classifier.setTreshold(0.1);
         int id = classifier.getMostProbableSpeaker().getId();
         String name = classifier.getMostProbableSpeaker().getName();
-        System.out.println("Most probable speaker ID:\t" + id + "\tname:\t" + name);
-
         double prob = classifier.getHighestProbability();
-        System.out.println("Highest probability:\t" + Double.toString(prob));
 
-        try {
-            soClassification = ClassificationFactory.create(MARF.getClassificationMethod(), soFeatureExtraction);
-            boolean classify = soClassification.classify();
-
-
-            System.out.println(soClassification.getResult().getDescription());
-            soClassification.getResultSet().size();
-//            System.out.println(Double.toString(soClassification.getResult().getOutcome()));
-//            Result[] rs = soClassification.getResultSet().getResultSetSorted();
-//            System.out.println(rs[1].getOutcome());
-
-//            System.out.println(soClassification.getResult().getID());
-//            System.out.println(soClassification.getResult().getOutcome());
-
-        } catch (ClassificationException ex) {
+        if (classifier.inSet()) {
+            System.out.println(this.sstrFileName + " | ID: " + id + " | " + name + " | prob: " + Double.toString(prob));
+        } else {
+            System.out.println(this.sstrFileName + " | No reconocido.");
+            System.out.println("ID: " + id + " | " + name + " | prob: " + Double.toString(prob));
         }
+
+//        try {
+//            soClassification = ClassificationFactory.create(MARF.getClassificationMethod(), soFeatureExtraction);
+//            boolean classify = soClassification.classify();
+//
+//
+//            System.out.println(soClassification.getResult().getDescription());
+//            soClassification.getResultSet().size();
+////            System.out.println(Double.toString(soClassification.getResult().getOutcome()));
+////            Result[] rs = soClassification.getResultSet().getResultSetSorted();
+////            System.out.println(rs[1].getOutcome());
+//
+////            System.out.println(soClassification.getResult().getID());
+////            System.out.println(soClassification.getResult().getOutcome());
+//
+//        } catch (ClassificationException ex) {
+//        }
     }
 
     private void saveFeatureExtraction() {
