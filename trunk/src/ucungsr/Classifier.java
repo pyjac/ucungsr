@@ -10,21 +10,17 @@ package ucungsr;
  */
 public final class Classifier {
 
-    private double[] probabilities = null;
-    private double[] sortedProbabilities = null;
     private int mostProbable;
     private Speaker[] speakers = null;
     private Speaker speaker = null;
     private double likehood;
     private double treshold;
-
-    public Classifier() {
-    }
+    private double DEFAULT_THRESHOLD = 0.1;
 
     public Classifier(Speaker _speaker, Speaker[] _speakers) {
         speaker = _speaker;
         speakers = _speakers;
-        classify();
+        treshold = DEFAULT_THRESHOLD;
     }
 
     public void setTreshold(double treshold) {
@@ -33,63 +29,60 @@ public final class Classifier {
 
     public void classify() {
         mostProbable = -1;
-        double prob = 0.0;
-        probabilities = new double[speakers.length];
+        double prob = Double.MIN_VALUE;
+        double tmpProb;
+
         likehood = 0.0;
+        double[] x = speaker.getMeanVector();
+        double[] u = new double[x.length];
+        double[] v = new double[x.length];
         for (int i = 0; i < speakers.length; i++) {
-            probabilities[i] = calculate(speaker, speakers[i]);
-            likehood +=probabilities[i];
-            if (probabilities[i] > prob) {
+
+            u = speakers[i].getMeanVector();
+            v = speakers[i].getVarianceVector();
+
+            tmpProb = px(x, u, v);
+            speakers[i].setProbability(tmpProb);
+            likehood += tmpProb;
+
+            System.out.println(speakers[i].getName() + " p: " + tmpProb);
+
+            if (tmpProb > prob) {
+                prob = tmpProb;
                 mostProbable = i;
-                prob = probabilities[i];
             }
         }
-        likehood /= speakers.length;
-        sortProbabilities();
     }
 
-    public boolean inSet(){
+    public boolean inSet() {
         return (likehood > treshold);
     }
 
-    private void sortProbabilities() {
-        double[] tmpSortedProbabilities = probabilities;
-        sortedProbabilities = new double[probabilities.length];
-        java.util.Arrays.sort(tmpSortedProbabilities);
-        for (int i = 0; i < probabilities.length; i++) {
-            sortedProbabilities[i] = tmpSortedProbabilities[probabilities.length - i - 1];
+    private double px(double[] x, double[] u, double[] v) {
+        int D = x.length;
+        if (u.length == D && v.length == D) {
+            double detSigma = 1.0;
+            double distance = 0.0;
+            for (int i = 1; i < D; i++) { // No tomo desde i=0 porque los coeficientes LPC son cero... (arreglar)
+                distance += mahDistance(x[i], u[i], v[i]);
+                detSigma *= v[i];
+            }
+            return Math.exp(-distance / 2) / Math.sqrt(Math.pow(2 * Math.PI, D - 1) * detSigma);
+        } else {
+            return 0.0;
         }
     }
 
-    private double calculate(Speaker spkX, Speaker spkRef) {
-//        System.out.println("calculating '" + spk1.getName() + "' against '" + spk2.getName() + "'...");
-//        System.out.println(spk2.toString());
-        double D = (double)spkRef.getMeanVector().length;
-        double detSigma = 1.0;
-        double d2 = 0.0;
-        for (int i = 1; i < D; i++) {
-            d2 += Math.pow(spkX.getMeanVector()[i] - spkRef.getMeanVector()[i], 2) / spkRef.getVarianceVector()[i];
-            detSigma *= spkRef.getVarianceVector()[i];
-        }
-        
-        double prob = Math.sqrt(Math.exp(-d2) / (Math.pow(2 * Math.PI, D-1) * detSigma));
-//        System.out.println("Probability:" + Double.toString(prob));
-        return prob;
+    private double mahDistance(double x, double u, double v) {
+        return Math.pow(x - u, 2) / v;
     }
 
-    public double[] getProbabilities() {
-        return probabilities;
-    }
-
-    public double[] getSortedProbabilities() {
-        return sortedProbabilities;
-    }
-
-    public double getHighestProbability() {
-        return sortedProbabilities[0];
-    }
 
     public Speaker getMostProbableSpeaker() {
         return speakers[mostProbable];
+    }
+
+    public int getMostProbableSpeakerIndex() {
+        return mostProbable;
     }
 }

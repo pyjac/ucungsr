@@ -132,7 +132,7 @@ public abstract class Preprocessing
 
     public final boolean removeSilence(int windowSize, int silenceLength, int fadeLength, int treshold) {
         double[] inSamples = this.oSample.getSampleArray();
-        long numSamples = MARF.getSample().getSampleSize();
+        long numSamples = oSample.getSampleSize();
 
         //Paso 0
         int indice = 0;
@@ -145,21 +145,21 @@ public abstract class Preprocessing
 
         // Paso 1
         double media = 0; // media
-        double desvest = 0; // desviación estandar
+        double variance = 0; // desviación estandar
 
         for (int i = indice; i < indice + silenceLength; i++) {
             double media0 = media;
             media = (i * media0 + Math.abs(inSamples[i])) / (i + 1); // u_(N+1) = (N*u_N + x_(N+1))/N+1
-            desvest = (i * desvest + i * Math.pow((media0 - media), 2) + Math.pow((Math.abs(inSamples[i]) - media), 2)) / (i + 1);
+            variance = (i * variance + i * Math.pow((media0 - media), 2) + Math.pow((Math.abs(inSamples[i]) - media), 2)) / (i + 1);
         }
 
-        desvest = Math.sqrt(desvest);
+//        variance = Math.sqrt(variance);
 
         //Paso 2
         boolean[] marcas = new boolean[(int) numSamples];
 
         for (int i = 0; i < numSamples; i++) {
-            double mahDistance = Math.abs(Math.abs(inSamples[i]) - media) / desvest;
+            double mahDistance = Math.abs(Math.abs(inSamples[i]) - media) / variance;
             marcas[i] = (mahDistance > treshold);
         }
 
@@ -202,7 +202,7 @@ public abstract class Preprocessing
 
         double[] outSamples = new double[indice];
 
-        System.out.println("in\t" + inSamples.length + "\tout\t" + outSamples.length);
+//        System.out.println("in\t" + inSamples.length + "\tout\t" + outSamples.length);
 
         System.arraycopy(tmpOutSamples, 0, outSamples, 0, indice);
 

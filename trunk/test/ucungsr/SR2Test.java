@@ -38,27 +38,16 @@ public class SR2Test {
 
     @Test
     public void testSomeMethod() {
-        String[] args = new String[2];
-        args[1] = "-insert";
-
-        //Entreno con Gustavo:
-        args[0] = "waves/gustavo_1.wav";
-//        SR2 sr2 = new SR2(args);
-
-        //Entreno con Jesica:
-        args[0] = "waves/jesica_1.wav";
-//        sr2 = new SR2(args);
-
+//        entrenarDirectorio();
         procesarDirectorio();
 
     }
 
     private void procesarDirectorio() {
         String[] args = new String[1];
-        SR2 sr2;
         File[] testWaveFiles = null;
 
-        File fileOrDir = new File("waves");
+        File fileOrDir = new File("testing-samples");
         if (fileOrDir.isDirectory()) {
             testWaveFiles = fileOrDir.listFiles();
         } else {
@@ -70,10 +59,36 @@ public class SR2Test {
             if (testWaveFiles[i].canRead()
                     && testWaveFiles[i].getName().toLowerCase().endsWith(".wav")) {
                 args[0] = testWaveFiles[i].getPath();
-                sr2 = new SR2(args);
+                SR2 sR2 = new SR2(args);
+                break;
             }
         }
 
 
+    }
+
+    private void entrenarDirectorio() {
+
+        String[] args = new String[3];
+        args[1] = "-insert";
+
+        File[] testWaveFiles = null;
+
+        File fileOrDir = new File("training-samples");
+        if (fileOrDir.isDirectory()) {
+            testWaveFiles = fileOrDir.listFiles();
+        } else {
+            testWaveFiles = new File[1];
+            testWaveFiles[0] = fileOrDir;
+        }
+
+        for (int i = 0; i < testWaveFiles.length; i++) {
+            if (testWaveFiles[i].canRead()
+                    && testWaveFiles[i].getName().toLowerCase().endsWith(".wav")) {
+                args[0] = testWaveFiles[i].getPath();
+                args[2] = testWaveFiles[i].getName().split("_")[0];
+                SR2 sR2 = new SR2(args);
+            }
+        }
     }
 }

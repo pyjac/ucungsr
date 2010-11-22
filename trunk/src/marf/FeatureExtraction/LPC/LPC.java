@@ -92,13 +92,13 @@ public class LPC
     public final boolean extractFeatures()
             throws FeatureExtractionException {
         try {
-            Debug.debug("LPC.extractFeatures() has begun...");
+//            System.out.println("LPC.extractFeatures() has begun...");
 
             double[] adSample = this.oPreprocessing.getSample().getSampleArray();
 
-            Debug.debug("sample length: " + adSample.length);
-            Debug.debug("poles: " + this.iPoles);
-            Debug.debug("window length: " + this.iWindowLen);
+//            System.out.println("sample length: " + adSample.length);
+//            System.out.println("poles: " + this.iPoles);
+//            System.out.println("window length: " + this.iWindowLen);
 
             Spectrogram oSpectrogram = null;
 
@@ -131,8 +131,8 @@ public class LPC
                 // Window the input.
                 for (int j = 0; j < this.iWindowLen; j++) {
                     adWindowed[j] = adSample[iCount - iHalfWindow + j];
-                    //windowed[j] = adSample[count - iHalfWindow + j] * hamming(j, this.windowLen);
-                    //Debug.debug("window: " + windowed[j]);
+//                    windowed[j] = adSample[count - iHalfWindow + j] * hamming(j, this.windowLen);
+//                    System.out.println("window: " + windowed[j]);
                 }
 
                 Algorithms.Hamming.hamming(adWindowed);
@@ -157,7 +157,7 @@ public class LPC
 //                    System.out.print(Double.toString(adLPCCoeffs[j]).replaceAll("\\.", ",") + "\t");
 
 //                    adFeatures[j] += adLPCCoeffs[j];
-                    //Debug.debug("lpc_coeffs[" + j + "]"  + lpc_coeffs[j]);
+                    //System.out.println("lpc_coeffs[" + j + "]"  + lpc_coeffs[j]);
                 }
 
                 iWindowsNum++;
@@ -175,14 +175,14 @@ public class LPC
 //            }
 
 
-            Debug.debug("LPC.extractFeatures() - number of windows = " + iWindowsNum);
+//            System.out.println("LPC.extractFeatures() - number of windows = " + iWindowsNum);
 
             // For the case when we want intermediate spectrogram
             if (MARF.getDumpSpectrogram() == true) {
                 oSpectrogram.dump();
             }
 
-            Debug.debug("LPC.extractFeatures() has finished.");
+//            System.out.println("LPC.extractFeatures() has finished.");
 
             return (this.adFeatures.length > 0);
         } catch (Exception e) {

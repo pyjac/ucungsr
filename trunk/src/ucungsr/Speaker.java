@@ -16,6 +16,24 @@ public class Speaker {
     private String[] asociatedWaveFiles = null;
     private String name;
     private int id;
+    private double distance;
+    private double probability;
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public double getProbability() {
+        return probability;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public void setProbability(double probability) {
+        this.probability = probability;
+    }
 
     public Speaker() {
     }
@@ -23,17 +41,17 @@ public class Speaker {
     @Override
     public String toString() {
         String mean = "meanVector\t";
-        for(int i = 0; i<meanVector.length;i++){
-                mean += Double.toString(meanVector[i])+" ";
+        for (int i = 0; i < meanVector.length; i++) {
+            mean += Double.toString(meanVector[i]) + " ";
         }
         String variance = "varianceVector\t";
-        for(int i = 0; i<varianceVector.length;i++){
-                variance += Double.toString(varianceVector[i])+" ";
+        for (int i = 0; i < varianceVector.length; i++) {
+            variance += Double.toString(varianceVector[i]) + " ";
         }
 
-        return "ID\t" + id + "\tName\t" + name+"\n"+mean+"\n"+variance;
+        return "ID\t" + id + "\tName\t" + name + "\n" + mean + "\n" + variance;
     }
-    
+
     public double[] getMeanVector() {
         return meanVector;
     }
@@ -50,7 +68,7 @@ public class Speaker {
         return asociatedWaveFiles;
     }
 
-    public int getId() {
+    public synchronized int getId() {
         return id;
     }
 
