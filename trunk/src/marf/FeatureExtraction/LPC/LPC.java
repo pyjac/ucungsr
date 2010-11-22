@@ -34,7 +34,7 @@ public class LPC
      * Default number of poles, 20.
      * @since 0.3.0
      */
-    public static final int DEFAULT_POLES = 10;
+    public static final int DEFAULT_POLES = 20;
     /**
      * Number of poles.
      * <p>A pole is a root of the denominator in the Laplace transform of the
