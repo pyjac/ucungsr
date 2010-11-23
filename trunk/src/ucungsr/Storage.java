@@ -83,23 +83,16 @@ public class Storage {
             query = "SELECT fs.spk_id, fs.index, fs.mean, fs.variance FROM features_stats fs ORDER BY fs.spk_id, fs.index";
             rs = s.executeQuery(query);
 
-
             double[] mean = new double[poles];
             double[] variance = new double[poles];
             int n = 0;
             while (rs.next()) {
-                double mean_n = trimDouble(rs.getDouble("mean"));
-                double variance_n = trimDouble(rs.getDouble("variance"));
                 int index = rs.getInt("index");
-
-                mean[index] = mean_n;
-                variance[index] = variance_n;
-
+                mean[index] = trimDouble(rs.getDouble("mean"));
+                variance[index] = trimDouble(rs.getDouble("variance"));
                 if (index >= poles - 1) {
-                    this.speakers[n].setMeanVector(mean);
-                    this.speakers[n].setVarianceVector(variance);
-                    mean = new double[poles];
-                    variance = new double[poles];
+                    this.speakers[n].setMeanVector(mean.clone());
+                    this.speakers[n].setVarianceVector(variance.clone());
                     n++;
                 }
             }

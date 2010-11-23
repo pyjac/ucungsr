@@ -77,11 +77,11 @@ public class Speaker {
     }
 
     public void setMeanVector(double[] meanVector) {
-        this.meanVector = meanVector;
+        this.meanVector = meanVector.clone();
     }
 
     public void setVarianceVector(double[] varianceVector) {
-        this.varianceVector = varianceVector;
+        this.varianceVector = varianceVector.clone();
     }
 
     public void setAsociatedPhones(String[] asociatedPhones) {

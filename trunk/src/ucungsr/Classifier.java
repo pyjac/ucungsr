@@ -30,22 +30,20 @@ public final class Classifier {
     public void classify() {
         mostProbable = -1;
         double prob = Double.MIN_VALUE;
-        double tmpProb;
 
         likehood = 0.0;
         double[] x = speaker.getMeanVector();
-        double[] u = new double[x.length];
-        double[] v = new double[x.length];
+
         for (int i = 0; i < speakers.length; i++) {
 
-            u = speakers[i].getMeanVector();
-            v = speakers[i].getVarianceVector();
+            double[] u = speakers[i].getMeanVector();
+            double[] v = speakers[i].getVarianceVector();
 
-            tmpProb = px(x, u, v);
+            double tmpProb = px(x, u, v);
             speakers[i].setProbability(tmpProb);
             likehood += tmpProb;
 
-            System.out.println(speakers[i].getName() + " p: " + tmpProb);
+//            System.out.println(speakers[i].getName() + " p: " + tmpProb);
 
             if (tmpProb > prob) {
                 prob = tmpProb;
@@ -76,7 +74,6 @@ public final class Classifier {
     private double mahDistance(double x, double u, double v) {
         return Math.pow(x - u, 2) / v;
     }
-
 
     public Speaker getMostProbableSpeaker() {
         return speakers[mostProbable];

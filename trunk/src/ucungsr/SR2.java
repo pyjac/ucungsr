@@ -133,8 +133,6 @@ public class SR2 {
         Classifier classifier = new Classifier(speaker, speakers);
         classifier.classify();
         
-        int mpsi = classifier.getMostProbableSpeakerIndex();
-
         Speaker MPS = classifier.getMostProbableSpeaker();
         int id = MPS.getId();
         String name = MPS.getName();
