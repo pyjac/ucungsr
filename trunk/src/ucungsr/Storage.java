@@ -55,7 +55,7 @@ public class Storage {
             ResultSet rs = s.executeQuery(query);
             rs.next();
 
-            int numSpeaker = rs.getInt(1);
+            int numSpeaker = rs.getInt(1) + 1;
 
             s.removeOpenResultSet(rs);
 
@@ -66,15 +66,15 @@ public class Storage {
                     + "ORDER BY fs.spk_id";
             rs = s.executeQuery(query);
 
-
             this.speakers = new Speaker[numSpeaker];
+            this.speakers[0] = this.getDefaultSpeaker();
 
             int poles = 0;
 
             while (rs.next()) {
-                this.speakers[rs.getRow() - 1] = new Speaker();
-                this.speakers[rs.getRow() - 1].setId(rs.getInt("id"));
-                this.speakers[rs.getRow() - 1].setName(rs.getString("name"));
+                this.speakers[rs.getRow()] = new Speaker();
+                this.speakers[rs.getRow()].setId(rs.getInt("id"));
+                this.speakers[rs.getRow()].setName(rs.getString("name"));
                 poles = Math.max(poles, rs.getInt("c"));
             }
 
@@ -85,7 +85,7 @@ public class Storage {
 
             double[] mean = new double[poles];
             double[] variance = new double[poles];
-            int n = 0;
+            int n = 1;
             while (rs.next()) {
                 int index = rs.getInt("index");
                 mean[index] = trimDouble(rs.getDouble("mean"));
@@ -109,7 +109,7 @@ public class Storage {
     }
 
     public int saveSpeaker(Speaker _speaker) {
-        int id = -1;
+        int id = 0;
         try {
             Statement s = (Statement) connection.createStatement();
             String query = "INSERT INTO speakers "
@@ -143,5 +143,14 @@ public class Storage {
             Logger.getLogger(Storage.class.getName()).log(Level.SEVERE, null, ex);
         }
         return id;
+    }
+
+    private Speaker getDefaultSpeaker() {
+        Speaker noSpeaker = new Speaker();
+        noSpeaker.setId(0);
+        noSpeaker.setName("?");
+        noSpeaker.setDistance(Double.MAX_VALUE);
+        noSpeaker.setProbability(0);
+        return noSpeaker;
     }
 }
