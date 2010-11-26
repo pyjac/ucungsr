@@ -130,7 +130,7 @@ public abstract class Preprocessing
 //		throw new NotImplementedException(this, "removeSilence()");
     }
 
-    public final boolean removeSilence(int windowSize, int silenceLength, int fadeLength, int treshold) {
+    public boolean removeSilence(int windowSize, int silenceLength, int fadeLength, int treshold) {
         double[] inSamples = this.oSample.getSampleArray();
         long numSamples = oSample.getSampleSize();
 
