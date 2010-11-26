@@ -48,6 +48,7 @@ public class SR2Test {
         File[] testWaveFiles = null;
 
         File fileOrDir = new File("testing-samples");
+//        File fileOrDir = new File("waves");
         if (fileOrDir.isDirectory()) {
             testWaveFiles = fileOrDir.listFiles();
         } else {
@@ -75,6 +76,7 @@ public class SR2Test {
         File[] testWaveFiles = null;
 
         File fileOrDir = new File("training-samples");
+//        File fileOrDir = new File("waves");
         if (fileOrDir.isDirectory()) {
             testWaveFiles = fileOrDir.listFiles();
         } else {
