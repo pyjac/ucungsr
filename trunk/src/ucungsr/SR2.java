@@ -107,8 +107,10 @@ public class SR2 {
 
     private void preprocess() {
         try {
-            soPreprocessing = PreprocessingFactory.create(MARF.getPreprocessingMethod(), soSample);
-            boolean preprocess = soPreprocessing.preprocess();
+            soPreprocessing = PreprocessingFactory.create(MARF.DUMMY, soSample);
+            boolean normaize = soPreprocessing.normalize();
+//            boolean removeNoice = soPreprocessing.removeNoise();
+//            boolean removeSilence = soPreprocessing.removeSilence();
         } catch (PreprocessingException ex) {
         }
     }
@@ -131,7 +133,8 @@ public class SR2 {
 
     private synchronized void classification() {
         Classifier classifier = new Classifier(speaker, speakers);
-        classifier.classify();
+//        classifier.classify();
+        classifier.getModel();
         
         Speaker MPS = classifier.getMostProbableSpeaker();
         int id = MPS.getId();
@@ -144,10 +147,10 @@ public class SR2 {
         }
         if (classifier.inSet()) {
             System.out.println(this.sstrFileName + " | ID: " + id + " | " + name + " | prob: " + Double.toString(prob) + " | " + result);
-        } else {
+        }
+        else {
             System.out.println(this.sstrFileName + " | No reconocido.");
-            System.out.println("ID: " + id + " | " + name + " | prob: " + Double.toString(prob));
-
+//            System.out.println("ID: " + id + " | " + name + " | prob: " + Double.toString(prob));
         }
     }
 
