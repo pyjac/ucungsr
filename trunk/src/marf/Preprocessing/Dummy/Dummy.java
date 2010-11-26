@@ -71,8 +71,8 @@ extends Preprocessing
 	public boolean preprocess()
 	throws PreprocessingException
 	{
-//		return normalize();
-		return (normalize() && removeSilence());
+		return normalize();
+//		return (normalize() && removeSilence());
 	}
 
 	/**
