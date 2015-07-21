@@ -1,0 +1,1 @@
+text-independent speaker recognition software based on LPC features vector extraction and classification algorithms.
